@@ -2,4 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dark.mapper.MemberMapper">
 
+<select id="idCheck" parameterType="String" resultType="String">
+SELECT 
+	dark_id
+FROM
+	dark_tbl
+WHERE
+	DARK_ID = #{dark_id}
+
+</select>
+
+<insert id="join" parameterType="com.dark.domain.MemberVO">
+INSERT INTO DARK_TBL(DARK_ID, DARK_NAME, DARK_EMAIL, DARK_PASSWORD, DARK_ZIPCODE, DARK_ADDR, DARK_DEADDR, DARK_PHONE)
+VALUES (#{dark_id}, #{dark_name}, #{dark_email}, #{dark_password}, #{dark_zipcode}, #{dark_addr}, #{dark_deaddr}, #{dark_phone})
+
+</insert>
+
+<select id="login" parameterType="String" resultType="com.dark.domain.MemberVO">
+
+SELECT
+	dark_id, 
+	dark_name, 
+	dark_email, 
+	dark_password, 
+	dark_zipcode, 
+	dark_addr, 
+	dark_deaddr, 
+	dark_phone, 
+	dark_point, 
+	dark_lastlogin, 
+	dark_datesub, 
+	dark_updatedate
+FROM
+	DARK_TBL
+WHERE
+	DARK_ID = #{dark_id}
+
+</select>
+
+<update id="loginTimeUpdate" parameterType="String">
+
+UPDATE
+	DARK_TBL
+SET
+	DARK_LASTLOGIN = sysdate
+WHERE
+	DARK_ID = #{mbsp_id}
+
+</update>
 </mapper>

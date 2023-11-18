@@ -4,12 +4,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-  <h5 class="my-0 mr-md-auto font-weight-normal"><a href="/">DocMall</a></h5>
+  <h5 class="my-0 mr-md-auto font-weight-normal"><a href="/">DarkMarket</a></h5>
   <c:if test="${sessionScope.loginStatus != null }">
   <div>
-  	<b>${sessionScope.loginStatus.mbsp_name }님</b>
-  	<b>${sessionScope.loginStatus.mbsp_email }</b>
-  	<b>최근 로그인시간: <fmt:formatDate value="${sessionScope.loginStatus.mbsp_lastlogin }" pattern="yyyy-MM-dd hh:mm:ss"/> </b>
+  	<b>${sessionScope.loginStatus.dark_name }님</b>
+  	<b>${sessionScope.loginStatus.dark_email }</b>
+  	<b>최근 로그인시간: <fmt:formatDate value="${sessionScope.loginStatus.dark_lastlogin }" pattern="yyyy-MM-dd hh:mm:ss"/> </b>
   </div>
   </c:if>
   <nav class="my-2 my-md-0 mr-md-3">
