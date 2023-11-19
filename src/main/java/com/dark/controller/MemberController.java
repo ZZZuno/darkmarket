@@ -6,23 +6,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dark.domain.MemberVO;
+import com.dark.dto.IdFindDTO;
 import com.dark.dto.LoginDTO;
 import com.dark.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @RequiredArgsConstructor
 @RequestMapping("/member/*")
 @Log4j
 @Controller
 public class MemberController {
+
+	private static final String String = null;
 
 	private final MemberService memberService;
 	
@@ -123,7 +128,153 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	@GetMapping("/mypage")
+	public void mypage(HttpSession session, Model model) throws Exception {
+		log.info("마이페이지 호출");
+		String dark_id = ((MemberVO) session.getAttribute("loginStatus")).getDark_id();
+		
+		MemberVO db_vo = memberService.login(dark_id);
+		model.addAttribute("memberVO", db_vo);
+	}
 	
+	@GetMapping("/confirmPw")
+	public void confirmPw() {
+		log.info("회원수정 인증호출");
+	}
 	
+	// 회원수정전 인증
+	@PostMapping("/confirmPw")
+	public String confirmPw(LoginDTO dto, RedirectAttributes rttr) throws Exception {
+		log.info("회원수정전 인증 재확인: " + dto);
+		MemberVO db_vo = memberService.login(dto.getDark_id());
+		
+		String url = "";
+		String msg = "";
+		
+		if(db_vo != null) {
+			if(passwordEncoder.matches(dto.getDark_password(), db_vo.getDark_password())) {
+				url = "/member/modify";
+			}else {
+				url = "/member/confirmPw";
+				msg = "비밀번호가 일치하지 않습니다.";
+				rttr.addFlashAttribute("msg", msg);
+			}
+		}else {
+			url = "/member/confirmPw";
+			msg = "존재하지 않는 아이디입니다.";
+			rttr.addAttribute("msg", msg);
+		}
+		
+		return "redirect:" + url;
+	}
+	
+	@GetMapping("/modify")
+	public void modify(HttpSession session, Model model) throws Exception {
+		
+	String dark_id = ((MemberVO) session.getAttribute("loginStatus")).getDark_id();
+		
+		MemberVO db_vo = memberService.login(dark_id);
+		model.addAttribute("memberVO", db_vo);
+	}
+	
+	@PostMapping("/modify")
+	public String modify(MemberVO vo, HttpSession session, RedirectAttributes rttr) throws Exception {
+		
+		MemberVO db_vo = (MemberVO) session.getAttribute("loginStatus");
+		
+		String msg = "";
+		
+		String dark_id = db_vo.getDark_id();
+		
+		vo.setDark_id(dark_id);
+		
+		// db 업데이트 작업
+		memberService.modify(vo);
+		
+		// header.jsp에서 전자우편이 수정된 내용으로 반영이 안되기 때문
+		db_vo.setDark_email(vo.getDark_email()); // 수정
+		session.setAttribute("loginStatus", db_vo);
+		msg = "회원정보가 수정됨";
+		rttr.addFlashAttribute("msg", msg);
+		
+		
+		return "redirect:/";
+	}
+	
+	@GetMapping("delConfirmPw")
+	public void delConfirmPw() {
+		
+	}
+	
+	@PostMapping("/delete")
+	public String delete(LoginDTO dto, HttpSession session, RedirectAttributes rttr) throws Exception {
+		
+		MemberVO db_vo = memberService.login(dto.getDark_id());
+		
+		String url = "";
+		String msg = "";
+		
+		if(db_vo != null) {
+			
+			if(passwordEncoder.matches(dto.getDark_password(), db_vo.getDark_password())) {
+				url = "/";
+				msg = "회원정보가 삭제되었습니다.";
+				rttr.addFlashAttribute("msg", msg);
+				session.invalidate(); // 세션소멸
+				
+				//회원탈퇴작업
+				memberService.delete(dto.getDark_id());
+				
+			}else {
+				url = "/member/delConfirmPw";
+				msg = "비밀번호가 일치하지 않습니다.";
+				rttr.addFlashAttribute("msg", msg);
+			}
+		}else {
+			url = "/member/delConfirmPw";
+			msg = "존재하지 않는 ID입니다.";
+			rttr.addFlashAttribute("msg", msg);
+		}
+		
+		return "redirect:" + url;
+	}
+	
+	@GetMapping("/idFind")
+	public void idFind() {
+		
+	}
+	
+	@PostMapping("/idFind")
+	public String idFind(IdFindDTO dto, RedirectAttributes rttr) {
+		
+		MemberVO db_vo = memberService.idFind(dto.getDark_name());
+		
+		String url = "";
+		String msg = "";
+		
+		if(db_vo != null) {
+			if(db_vo.getDark_email().equals(dto.getDark_email())) {
+				url = "/member/idFound";
+				rttr.addFlashAttribute("memberVO", db_vo);
+			}else {
+				url = "/member/idFind";
+				msg = "존재하지 않는 Email입니다.";
+				rttr.addFlashAttribute("msg", msg);
+			}
+				
+			}else {
+				url = "/member/idFind";
+				msg = "일치하는 id가 없습니다.";
+				rttr.addFlashAttribute("msg", msg);
+		}
+		
+		
+		return "redirect:" + url;
+	}
+	
+	@GetMapping("/idFound")
+	public void idFound() {
+		
+	}
 	
 }

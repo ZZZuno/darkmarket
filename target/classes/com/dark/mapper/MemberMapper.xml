@@ -50,4 +50,40 @@ WHERE
 	DARK_ID = #{mbsp_id}
 
 </update>
+
+<update id="modify" parameterType="com.dark.domain.MemberVO">
+
+		UPDATE 
+			DARK_TBL
+    	SET 
+    		DARK_EMAIL = #{dark_email}, 
+    		DARK_ZIPCODE = #{dark_zipcode}, 
+    		DARK_ADDR = #{dark_addr}, 
+    		DARK_DEADDR = #{dark_deaddr}, 
+    		DARK_PHONE = #{dark_phone},
+    		DARK_UPDATEDATE = sysdate
+    		
+		WHERE 
+			DARK_ID = #{dark_id}
+</update>
+
+<delete id="delete" parameterType="String">
+
+DELETE FROM
+	DARK_TBL
+WHERE
+	DARK_ID = #{dark_id}
+
+</delete>
+
+<select id="idFind" parameterType="String" resultType="com.dark.domain.MemberVO">
+
+SELECT 
+	DARK_ID, DARK_EMAIL
+FROM 
+	DARK_TBL
+WHERE
+	DARK_NAME = #{dark_name}
+
+</select>
 </mapper>

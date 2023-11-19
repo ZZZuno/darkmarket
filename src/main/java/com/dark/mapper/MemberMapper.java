@@ -12,4 +12,9 @@ public interface MemberMapper {
 	
 	void loginTimeUpdate(String dark_id);
 
+	void modify(MemberVO vo);
+	
+	void delete(String dark_id);
+	
+	MemberVO idFind(String dark_name);
 }

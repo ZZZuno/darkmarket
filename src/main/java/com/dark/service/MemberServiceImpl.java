@@ -36,4 +36,23 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		memberMapper.loginTimeUpdate(dark_id);
 	}
+
+	@Override
+	public void modify(MemberVO vo) {
+		
+		memberMapper.modify(vo);
+		
+	}
+
+	@Override
+	public void delete(String dark_id) {
+		memberMapper.delete(dark_id);
+		
+	}
+
+	@Override
+	public MemberVO idFind(String dark_name) {
+		
+		return memberMapper.idFind(dark_name);
+	}
 }

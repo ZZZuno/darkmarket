@@ -37,12 +37,13 @@
       }
     </style>
 
-    <script>
-      let msg = '${msg}';
-      if(msg == 'success') {
-        alert("회원정보가 수정됨");
-      }
-    </script>
+<script>
+  let msg = '${msg}';
+  if(msg != "") {
+    alert(msg);
+  }
+
+</script>
 
   </head>
   <body>

@@ -52,10 +52,10 @@
    <div class="text-center">
     <div class="box box-primary">
       <div class="box-header with-border">
-      <h3 class="box-title">로그인</h3>
+      <h3 class="box-title">회원수정 인증확인</h3>
       </div>
       
-      <form role="form" id="loginForm" method="post" action="/member/login">
+      <form role="form" id="loginForm" method="post" action="/member/confirmPw">
       <div class="box-body">
       <div class="form-group row">
         <label for="dark_id" class="col-2">아이디</label>
@@ -71,8 +71,7 @@
       </div>
       
       <div class="box-footer">
-      <button type="submit" class="btn btn-primary" id="btnLogin">로그인</button>
-      <button type="button" class="btn btn-primary" id="btnFind">아이디찾기</button>
+      <button type="submit" class="btn btn-primary" id="btnLogin">인증확인</button>
       </div>
       </form>
       </div>
@@ -89,10 +88,7 @@
   // ready()이벤트 메서드 : 브라우저가 html태그를 모두 읽고난 후에 동작하는 이벤트 특징.
   // 자바스크립트 이벤트 등록 : https://www.w3schools.com/js/js_htmldom_eventlistener.asp
   $(document).ready(function() {
-	$("#btnFind").click(function() {
 
-		location.href = "/member/idFind";	
-	});
 	
   });
    

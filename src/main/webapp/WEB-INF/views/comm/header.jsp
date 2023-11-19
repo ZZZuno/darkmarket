@@ -24,11 +24,11 @@
     <c:if test="${sessionScope.loginStatus != null }">
     <a class="p-2 text-dark" href="/member/logout">Logout</a>
     <a class="p-2 text-dark" href="/member/confirmPw">Modify</a>
-    </c:if>
     
     <a class="p-2 text-dark" href="/member/mypage">MyPage</a>
     <a class="p-2 text-dark" href="#">Order</a>
     <a class="p-2 text-dark" href="/user/cart/cart_list">Cart</a>
+    </c:if>
     
     <a class="p-2 text-dark" href="/admin/intro">[Admin]</a>
   </nav>
