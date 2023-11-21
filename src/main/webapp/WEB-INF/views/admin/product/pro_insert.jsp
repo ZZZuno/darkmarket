@@ -90,21 +90,21 @@ desired effect
 						<div class="form-group row">
 						  <label for="title" class="col-sm-2 col-form-label">상품명</label>
 			              <div class="col-sm-4">
-			                <input type="text" class="form-control" name="pro_name" id="pro_name" placeholder="상품명 입력...">
+			                <input type="text" class="form-control" name="item_name" id="item_name" placeholder="상품명 입력...">
 			              </div>
 			              <label for="title" class="col-sm-2 col-form-label">상품가격</label>
 			              <div class="col-sm-4">
-			                <input type="text" class="form-control" name="pro_price" id="pro_price" placeholder="상품가격 입력...">
+			                <input type="text" class="form-control" name="item_price" id="item_price" placeholder="상품가격 입력...">
 			              </div>
 						</div>
 						<div class="form-group row">
 						  <label for="title" class="col-sm-2 col-form-label">할인율</label>
 			              <div class="col-sm-4">
-			                <input type="text" class="form-control" name="pro_discount" id="pro_discount" placeholder="할인율 입력...">
+			                <input type="text" class="form-control" name="item_discount" id="item_discount" placeholder="할인율 입력...">
 			              </div>
 			              <label for="title" class="col-sm-2 col-form-label">제조사</label>
 			              <div class="col-sm-4">
-			                <input type="text" class="form-control" name="pro_publisher" id="pro_publisher" placeholder="제조사 입력...">
+			                <input type="text" class="form-control" name="item_publisher" id="item_publisher" placeholder="제조사 입력...">
 			              </div>
 						</div>
 						<div class="form-group row">
@@ -120,17 +120,17 @@ desired effect
 						<div class="form-group row">
 						  <label for="title" class="col-sm-2 col-form-label">상품설명</label>
 			              <div class="col-sm-10">
-			                <textarea class="form-control" name="pro_content" id="pro_content" rows="3"></textarea>
+			                <textarea class="form-control" name="item_content" id="item_content" rows="3"></textarea>
 			              </div>
 			            </div>
 			            <div class="form-group row">
 						  <label for="title" class="col-sm-2 col-form-label">수량</label>
 			              <div class="col-sm-4">
-			                <input type="text" class="form-control" name="pro_amount" id="pro_amount" placeholder="수량 입력...">
+			                <input type="text" class="form-control" name="item_amount" id="item_amount" placeholder="수량 입력...">
 			              </div>
 			              <label for="title" class="col-sm-2 col-form-label">판매여부</label>
 			              <div class="col-sm-4">
-			               	<select class="form-control" id="pro_buy" name="pro_buy">
+			               	<select class="form-control" id="item_buy" name="item_buy">
 			                  <option value="Y">판매가능</option>
 			                  <option value="N">판매불가능</option>
 			                </select>
@@ -257,7 +257,7 @@ desired effect
 			filebrowserUploadUrl: '/admin/product/imageUpload' 
     }
 
-    CKEDITOR.replace("pro_content", ckeditor_config);
+    CKEDITOR.replace("item_content", ckeditor_config);
     
 
     // 1차카테고리 선택
@@ -289,6 +289,23 @@ desired effect
 
     });
 
+    });
+
+        //파일첨부시 이미지 미리보기
+    // 파일첨부에 따른 이벤트관련정보를 e라는 매개변수를 통하여, 참조가 됨.
+    $("#uploadFile").change(function(e) {
+      let file = e.target.files[0]; // 선택파일들중 첫번째 파일.
+
+      let reader = new FileReader(); // 첨부된 파일을 이용하여, File객체를 생성하는 용도
+      reader.readAsDataURL(file); // reader객체에 파일정보가 할당.
+
+
+      reader.onload = function(e) {
+        // <img id="img_preview" style="width:200px;height:200px;">
+        // e.target.result : reader객체의 이미지파일정보
+        $("#img_preview").attr("src", e.target.result);
+      }
+      
     });
 
   });

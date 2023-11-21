@@ -4,4 +4,12 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dark.mapper.AdProductMapper">
 
+<insert id="pro_insert" parameterType="com.dark.domain.ItemVO">
+
+INSERT INTO
+    ITEM_TBL(item_num, CG_CODE, ITEM_NAME, ITEM_PRICE, ITEM_DISCOUNT, ITEM_PUBLISHER, ITEM_CONTENT, ITEM_UP_FOLDER, ITEM_IMG, ITEM_AMOUNT, ITEM_BUY)
+    VALUES(SEQ_ITEM_TBL.nextval, #{cg_code}, #{item_name}, #{item_price}, #{item_discount}, #{item_publisher}, #{item_content}, #{item_up_folder}, #{item_img}, #{item_amount}, #{item_buy})
+
+</insert>
+
 </mapper>
