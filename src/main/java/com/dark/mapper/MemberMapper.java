@@ -1,6 +1,9 @@
 package com.dark.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.dark.domain.MemberVO;
+import com.dark.dto.IdFindDTO;
 
 public interface MemberMapper {
 	
@@ -17,4 +20,6 @@ public interface MemberMapper {
 	void delete(String dark_id);
 	
 	MemberVO idFind(String dark_name);
+	
+	void updatePassword(@Param("id")  String id, @Param("encryptedPassword") String encryptedPassword);
 }

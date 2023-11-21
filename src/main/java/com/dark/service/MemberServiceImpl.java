@@ -1,5 +1,7 @@
 package com.dark.service;
 
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dark.domain.MemberVO;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpl implements MemberService {
 
 	private final MemberMapper memberMapper;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public String idCheck(String dark_id) {
@@ -54,5 +57,15 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVO idFind(String dark_name) {
 		
 		return memberMapper.idFind(dark_name);
+	}
+
+	@Override
+	public void updatePassword(String id, String newPassword) {
+	    // 비밀번호 암호화
+	    String encryptedPassword = passwordEncoder.encode(newPassword);
+	    
+	    // 데이터베이스에 업데이트
+	    // memberMapper를 사용하여 데이터베이스에 업데이트하는 로직 구현
+	    memberMapper.updatePassword(id, encryptedPassword);
 	}
 }

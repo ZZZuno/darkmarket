@@ -79,11 +79,24 @@ WHERE
 <select id="idFind" parameterType="String" resultType="com.dark.domain.MemberVO">
 
 SELECT 
-	DARK_ID, DARK_EMAIL
+	DARK_ID, DARK_PASSWORD, DARK_EMAIL
 FROM 
 	DARK_TBL
 WHERE
 	DARK_NAME = #{dark_name}
 
 </select>
+
+<update id="updatePassword" parameterType="map">
+
+UPDATE 
+	DARK_TBL
+SET
+	DARK_PASSWORD = #{encryptedPassword}
+WHERE
+	DARK_ID = #{id}
+
+
+</update>
+
 </mapper>

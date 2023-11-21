@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -77,8 +77,8 @@ desired effect
 			                <select class="form-control" id="firstCategory">
 			                  <option>1차카테고리 선택</option>
 			                  <c:forEach items="${firstCategoryList }" var="categoryVO">
-			                  	<option value="${categoryVO.cg_code }">${categoryVO.cg_name }</option>
-			                  </c:forEach>
+			                  	<option value="${categoryVO.cg_code }">${categoryVO.cg_name}</option>
+                        </c:forEach>
 			                </select>
 			              </div>
 			              <div class="col-sm-3">
@@ -246,11 +246,11 @@ desired effect
 <script>
   $(document).ready(function() {
 
-    // ckeditor 환경설정. 자바스크립트 Ojbect문법
+    // ckeditor 환경설정. 자바스크립트 Object 문법
     var ckeditor_config = {
-			resize_enabled : false,
-			enterMode : CKEDITOR.ENTER_BR,
-			shiftEnterMode : CKEDITOR.ENTER_P,
+      resize_enabled : false,
+      enterMode : CKEDITOR.ENTER_BR,
+      shiftEnterMode : CKEDITOR.ENTER_P,
 			toolbarCanCollapse : true,
 			removePlugins : "elementspath", 
 			//업로드 탭기능추가 속성. CKEditor에서 파일업로드해서 서버로 전송클릭하면 , 이 주소가 동작된다.
@@ -258,10 +258,7 @@ desired effect
     }
 
     CKEDITOR.replace("pro_content", ckeditor_config);
-
-    console.log("ckediotr 버전: ", CKEDITOR.version);
-
-
+    
 
     // 1차카테고리 선택
     // document.getElementById("firstCategory")
@@ -271,56 +268,31 @@ desired effect
 
       // console.log("1차카테고리 코드", cg_parent_code);
 
-      // 1차카테고리 선택에 의한 2차카테고리 정보를 가져오는 url
-      let url = "/admin/category/secondCategory/" + cg_parent_code; // + ".json";
+      let url = "/admin/category/secondCategory/" + cg_parent_code;
 
-      // $.getJSON() : 스프링에 요청시 데이타를 json으로 받는 기능. ajax기능제공.
+      // $.getJSON() : 스프링에 요청시 데이터를 json으로 받는 기능. ajax기능제공.
       $.getJSON(url, function(secondCategoryList) {
-        // console.log("2차카테고리 정보", secondCategoryList);
+      // console.log("2차카테고리 정보", secondCategoryList);
 
-        // console.log("2차카테고리 개수", secondCategoryList.length);
+      let secondCategory = $("#secondCategory");
+      let optionStr = "";
 
-        // 2차카테고리 select태그참조.
-        let secondCategory = $("#secondCategory");
-        let optionStr = "";
-        // <option value='10'>바지</option>
-        
-        // find("css선택자") : 태그명, id속성이름, class속성이름
-        secondCategory.find("option").remove(); // 2차카테고리의 option제거
-        secondCategory.append("<option value=''>2차 카테고리 선택</option>");
+      secondCategory.find("option").remove();
+      secondCategory.append("<option value=''>2차 카테고리 선택</option>");
 
-        for(let i=0; i<secondCategoryList.length; i++) {
-          optionStr += "<option value='" + secondCategoryList[i].cg_code + "'>" + secondCategoryList[i].cg_name + "</option>";
+      for(let i=0; i<secondCategoryList.length; i++) {
+        optionStr += "<option value='" + secondCategoryList[i].cg_code + "'>" + secondCategoryList[i].cg_name + "</option>";
+      }
 
-        }
+      // console.log(optionStr);
+      secondCategory.append(optionStr); // 2차카테고리 <option>태그들 추가.
 
-        // console.log(optionStr);
-        secondCategory.append(optionStr); // 2차카테고리 <option>태그들이 추가.
-
-
-      });
-
-      
     });
 
-    //파일첨부시 이미지 미리보기
-    // 파일첨부에 따른 이벤트관련정보를 e라는 매개변수를 통하여, 참조가 됨.
-    $("#uploadFile").change(function(e) {
-      let file = e.target.files[0]; // 선택파일들중 첫번째 파일.
-
-      let reader = new FileReader(); // 첨부된 파일을 이용하여, File객체를 생성하는 용도
-      reader.readAsDataURL(file); // reader객체에 파일정보가 할당.
-
-
-      reader.onload = function(e) {
-        // <img id="img_preview" style="width:200px;height:200px;">
-        // e.target.result : reader객체의 이미지파일정보
-        $("#img_preview").attr("src", e.target.result);
-      }
-      
     });
 
   });
 </script>
+
 </body>
 </html>

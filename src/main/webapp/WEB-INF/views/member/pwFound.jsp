@@ -52,29 +52,32 @@
    <div class="text-center">
     <div class="box box-primary">
       <div class="box-header with-border">
-      <h3 class="box-title">로그인</h3>
+      <h3 class="box-title">비밀번호 변경</h3>
       </div>
       
-      <form role="form" id="loginForm" method="post" action="/member/login">
+      <form role="form" id="findForm" method="post" action="/member/pwFound">
       <div class="box-body">
+        <div class="form-group row">
+          <label for="dark_name" class="col-2">아이디</label>
+          <div class="col-10">
+            <input type="text" class="form-control" name="id" id="id" placeholder="아이디 입력...">
+          </div>
+        </div>
       <div class="form-group row">
-        <label for="dark_id" class="col-2">아이디</label>
+        <label for="dark_name" class="col-2">새 비밀번호</label>
         <div class="col-10">
-          <input type="text" class="form-control" name="dark_id" id="dark_id" placeholder="아이디 입력...">
+          <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="비밀번호 입력...">
         </div>
       </div>
       <div class="form-group row">
-        <label for="dark_password" class="col-2">비밀번호</label>
+        <label for="dark_email" class="col-2">새 비밀번호 확인</label>
         <div class="col-10">
-          <input type="password" class="form-control" name="dark_password" id="dark_password" placeholder="비밀번호 입력...">
+          <input type="password" class="form-control" name="newPassword2" id="newPassword2" placeholder="비밀번호 확인 입력...">
         </div>
-      </div>
       </div>
       
       <div class="box-footer">
-      <button type="submit" class="btn btn-primary" id="btnLogin">로그인</button>
-      <button type="button" class="btn btn-primary" id="btnFindid">아이디찾기</button>
-      <button type="button" class="btn btn-primary" id="btnFindpw">비밀번호찾기</button>
+      <button type="button" class="btn btn-primary" id="btnFind">비밀번호 변경</button>
       </div>
       </form>
       </div>
@@ -91,17 +94,34 @@
   // ready()이벤트 메서드 : 브라우저가 html태그를 모두 읽고난 후에 동작하는 이벤트 특징.
   // 자바스크립트 이벤트 등록 : https://www.w3schools.com/js/js_htmldom_eventlistener.asp
   $(document).ready(function() {
-	$("#btnFindid").click(function() {
 
-		location.href = "/member/idFind";	
-	});
+       let findForm = $("#findForm");
+	   $("#btnFind").click(function() {
 
-  $("#btnFindpw").click(function() {
+      if($("#id").val() == "") {
+				alert("아이디를 입력해주세요.");
+				$("#id").focus();
+				return;
+			}
 
-location.href = "/member/pwFind";	
-});
+		   if($("#newPassword").val() == "") {
+				alert("비밀번호를 입력해주세요.");
+				$("#dark_password").focus();
+				return;
+			}
 
-	
+		   if($("#newPassword").val() != $("#newPassword2").val()) {
+				alert("비밀번호 확인이 일치하지 않습니다.");
+				$("#newPassword2").focus();
+				return;
+			}
+		  
+
+	      findForm.submit();
+
+
+	        
+	   });
   });
    
 </script>

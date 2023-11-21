@@ -2,6 +2,7 @@ package com.dark.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dark.domain.MemberVO;
@@ -19,7 +21,6 @@ import com.dark.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import oracle.jdbc.proxy.annotation.Post;
 
 @RequiredArgsConstructor
 @RequestMapping("/member/*")
@@ -255,7 +256,7 @@ public class MemberController {
 		if(db_vo != null) {
 			if(db_vo.getDark_email().equals(dto.getDark_email())) {
 				url = "/member/idFound";
-				rttr.addFlashAttribute("memberVO", db_vo);
+				rttr.addFlashAttribute("memberVO", dto);
 			}else {
 				url = "/member/idFind";
 				msg = "존재하지 않는 Email입니다.";
@@ -275,6 +276,63 @@ public class MemberController {
 	@GetMapping("/idFound")
 	public void idFound() {
 		
+	}
+	
+	@GetMapping("/pwFind")
+	public void pwFind() {
+		
+	}
+	
+	@PostMapping("/pwFind")
+	public String pwFind(MemberVO vo, RedirectAttributes rttr) {
+		
+		MemberVO db_vo = memberService.idFind(vo.getDark_name());
+		
+		String url = "";
+		String msg = "";
+		
+		if(db_vo != null) {
+			if(db_vo.getDark_id().equals(vo.getDark_id())) {
+				if(db_vo.getDark_email().equals(vo.getDark_email())) {
+					url = "/member/pwFound";
+				}else {
+					url = "/member/pwFind";
+					msg = "이메일이 일치하지 않습니다.";
+					rttr.addFlashAttribute("msg", msg);
+				}
+				
+			}else {
+				url = "/member/pwFind";
+				msg = "아이디가 일치하지 않습니다.";
+				rttr.addFlashAttribute("msg", msg);
+			}
+		}else {
+			url = "/member/pwFind";
+			msg = "존재하지 않는 사용자명입니다.";
+			rttr.addFlashAttribute("msg", msg);
+		}
+		
+		return "redirect:" + url;
+	}
+	
+	@GetMapping("/pwFound")
+	public void pwFound() {
+		
+	}
+	
+	@PostMapping("/pwFound")
+	public String updatePassword(@RequestParam("id") String id, 
+								 @RequestParam("newPassword") String newPassword, 
+	                             RedirectAttributes rttr) {
+	    
+		log.info("아이디: " + id);
+		log.info("비밀번호: " + newPassword);
+		
+	    memberService.updatePassword(id, newPassword);
+	    String msg = "비밀번호가 변경되었습니다.";
+	    rttr.addFlashAttribute("msg", msg);
+
+	    return "redirect:/member/login";
 	}
 	
 }

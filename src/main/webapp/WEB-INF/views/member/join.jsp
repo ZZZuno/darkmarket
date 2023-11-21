@@ -76,13 +76,13 @@
       <div class="form-group row">
         <label for="dark_name" class="col-2">이름</label>
         <div class="col-10">
-          <input type="text" class="form-control" name="dark_name" id="dark_name" placeholder="이름입력...">
+          <input type="text" class="form-control" name="dark_name" id="dark_name" placeholder="이름 입력...">
         </div>
       </div>
       <div class="form-group row">
         <label for="dark_email" class="col-2">전자우편</label>
         <div class="col-8">
-          <input type="email" class="form-control" name="dark_email" id="dark_email" placeholder="전자우편입력...">
+          <input type="email" class="form-control" name="dark_email" id="dark_email" placeholder="전자우편 입력...">
         </div>
         <div class="col-2">
           <button type="button" class="btn btn-outline-info" id="mailAuth">메일인증</button>
@@ -109,20 +109,20 @@
       <div class="form-group row">
         <label for="sample2_address" class="col-2">기본주소</label>
         <div class="col-10">
-          <input type="text" class="form-control" name="dark_addr" id="sample2_address" placeholder="기본주소입력...">
+          <input type="text" class="form-control" name="dark_addr" id="sample2_address" placeholder="기본주소 입력...">
         </div>
       </div>
       <div class="form-group row">
         <label for="sample2_detailAddress" class="col-2">상세주소</label>
         <div class="col-10">
-          <input type="text" class="form-control" name="dark_deaddr" id="sample2_detailAddress" placeholder="상세주소입력...">
+          <input type="text" class="form-control" name="dark_deaddr" id="sample2_detailAddress" placeholder="상세주소 입력...">
           <input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
         </div>
       </div>
       <div class="form-group row">
         <label for="dark_phone" class="col-2">전화번호</label>
         <div class="col-10">
-          <input type="text" class="form-control" name="dark_phone" id="dark_phone" placeholder="전화번호입력...">
+          <input type="text" class="form-control" name="dark_phone" id="dark_phone" placeholder="전화번호 입력...">
         </div>
       </div>
       
