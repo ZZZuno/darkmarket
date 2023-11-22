@@ -96,20 +96,20 @@ desired effect
 								<th style="width: 10%">수정</th>
 								<th style="width: 10%">삭제</th>
 							</tr>
-							<c:forEach items="${pro_list }" var="productVO">
+							<c:forEach items="${pro_list }" var="itemVO">
 							<tr>
-								<td><input type="checkbox" name="check" value="${productVO.pro_num }"></td>
-								<td>${productVO.pro_num }</td>
+								<td><input type="checkbox" name="check" value="${productVO.item_num }"></td>
+								<td>${itemVO.item_num }</td>
 								<td>
-									<a class="move" href="#" data-bno="${productVO.pro_num }"><img src="/admin/product/imageDisplay?dateFolderName=${productVO.pro_up_folder }&fileName=s_${productVO.pro_img }"></a>
-									<a class="move pro_name" href="#" data-bno="${productVO.pro_num }">${productVO.pro_name }</a>
+									<a class="move" href="#" data-bno="${itemVO.item_num }"><img src="/admin/product/imageDisplay?dateFolderName=${itemVO.item_up_folder }&fileName=s_${itemVO.item_img }"></a>
+									<a class="move pro_name" href="#" data-bno="${itemVO.item_num }">${itemVO.item_name }</a>
 								</td>
-								<td><input type="text" name="pro_price" value="${productVO.pro_price }"></td>
-								<td><fmt:formatDate value="${productVO.pro_date }" pattern="yyyy-MM-dd" /></td>
+								<td><input type="text" name="pro_price" value="${itemVO.item_price }"></td>
+								<td><fmt:formatDate value="${itemVO.item_date }" pattern="yyyy-MM-dd" /></td>
 								<td>
 									<select id="pro_buy" name="pro_buy">
-										<option value="Y" ${productVO.pro_buy == 'Y'? 'selected':''} >판매가능</option>
-										<option value="N" ${productVO.pro_buy == 'N'? 'selected':''}>판매불가능</option>
+										<option value="Y" ${itemVO.item_buy == 'Y'? 'selected':''} >판매가능</option>
+										<option value="N" ${itemVO.item_buy == 'N'? 'selected':''}>판매불가능</option>
 									</select>
 								</td>
 								<td><button type="button" class="btn btn-primary" name="btn_pro_edit">수정</button></td>
@@ -264,178 +264,18 @@ desired effect
 
     let actionForm = $("#actionForm");
 
-    // [이전] 1 2 3 4 5 [다음] 클릭 이벤트 설정. <a>태그
     $(".movepage").on("click", function(e) {
-      e.preventDefault(); // a태그의 href 링크기능을 제거. href속성에 페이지번호를 숨겨둠.
+      e.preventDefault(); // a태그 링크기능 제거
 
       actionForm.attr("action", "/admin/product/pro_list");
       actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 
-       actionForm.submit();
-    });
-    
-    // 목록에서 제목행 체크박스 선택
-    let isCheck = true;
-    $("#checkAll").on("click", function() {
-      $("input[name='check']").prop("checked", this.checked);
-      isCheck = this.checked;
+      actionForm.submit();
     });
 
-    // 목록에서 데이터행 체크박스 선택
-    $("input[name='check']").on("click", function() {
-      //제목행 체크상태 변경
-      $("#checkAll").prop("checked", this.checked);
-
-      //데이터 행의 체크박스 상태를 확인해서 제목행 체크상태 변경
-      $("input[name='check']").each(function() {
-        if(!$(this).is(":checked")) {
-          $("#checkAll").prop("checked", false);
-        }
-      });
+    $("#btn_pro_insert").on("click", function() {
+      location.href = "/admin/product/pro_insert";
     });
-
-    //체크박스수정1 버튼 클릭
-    $("#btn_check_modify1").on("click", function(){
-      // 체크박스 유무확인
-      if($("input[name='check']:checked").length == 0) {
-        alert("수정할 상품을 체크하세요.");
-        return;
-      }
-
-      // 배열문법
-      let pro_num_arr = []; // 체크된 상품코드 배열
-      let pro_price_arr = []; // 체크된 상품가격 배열
-      let pro_buy_arr = []; // 체크된 상품진열 배열
-
-      //데이터행에서 체크된 체크박스 선택자
-      $("input[name='check']:checked").each(function() {
-        pro_num_arr.push($(this).val());
-        pro_price_arr.push($(this).parent().parent().find("input[name='pro_price']").val());
-        pro_buy_arr.push($(this).parent().parent().find("select[name='pro_buy']").val());
-      });
-
-      console.log("상품코드", pro_num_arr);
-      console.log("상품가격", pro_price_arr );
-      console.log("상품진열",pro_buy_arr );
-
-      $.ajax({
-      url: '/admin/product/pro_checked_modify1',
-      type: 'post',
-      data: {pro_num_arr: pro_num_arr, pro_price_arr: pro_price_arr, pro_buy_arr: pro_buy_arr},
-      dataType: 'text',
-      success: function(result) {
-        if(result == "success") {
-          alert("체크상품이 수정되었읍니다.");
-
-          //db에서 다시 불러오는 작업.
-          //1) location.href = "/admin/product/pro_list";
-          //2) 현재 리스트 상태로 불러오는 의미.
-          /* 
-          actionForm.attr("method", "get");
-          actionForm.attr("action", "/admin/product/pro_list");
-          actionForm.submit();
-          */
-        }
-      }
-     });
-    }); 
-
-    //체크박스수정2 버튼 클릭
-    $("#btn_check_modify2").on("click", function(){
-      // 체크박스 유무확인
-      if($("input[name='check']:checked").length == 0) {
-        alert("수정할 상품을 체크하세요.");
-        return;
-      }
-
-      // 배열문법
-      let pro_num_arr = []; // 체크된 상품코드 배열
-      let pro_price_arr = []; // 체크된 상품가격 배열
-      let pro_buy_arr = []; // 체크된 상품진열 배열
-
-      //데이터행에서 체크된 체크박스 선택자
-      $("input[name='check']:checked").each(function() {
-        pro_num_arr.push($(this).val());
-        pro_price_arr.push($(this).parent().parent().find("input[name='pro_price']").val());
-        pro_buy_arr.push($(this).parent().parent().find("select[name='pro_buy']").val());
-      });
-
-      console.log("상품코드", pro_num_arr);
-      console.log("상품가격", pro_price_arr );
-      console.log("상품진열",pro_buy_arr );
-
-      $.ajax({
-      url: '/admin/product/pro_checked_modify2',
-      type: 'post',
-      data: {pro_num_arr: pro_num_arr, pro_price_arr: pro_price_arr, pro_buy_arr: pro_buy_arr},
-      dataType: 'text',
-      success: function(result) {
-        if(result == "success") {
-          alert("체크상품이 수정되었읍니다.");
-
-          //db에서 다시 불러오는 작업.
-          //1) location.href = "/admin/product/pro_list";
-          //2) 현재 리스트 상태로 불러오는 의미.
-          /* 
-          actionForm.attr("method", "get");
-          actionForm.attr("action", "/admin/product/pro_list");
-          actionForm.submit();
-          */
-        }
-      }
-     });
-    }); 
-   
-  
-  //상품등록
-  $("#btn_pro_insert").on("click", function() {
-    location.href = "/admin/product/pro_insert";
-  });
-    
-  //상품수정
-  $("button[name='btn_pro_edit']").on("click", function() {
-    
-    //수정 상품코드
-    let pro_num = $(this).parent().parent().find("input[name='check']").val();
-
-    console.log(pro_num);
-    //뒤로가기 클릭후 다시 수정버튼 클릭시 코드 중복되는 부분때문에 제거.
-    actionForm.find("input[name='pro_num']").remove();
-
-    // <input type="hidden" name="pro_num" id="pro_num" value="24" />
-    actionForm.append('<input type="hidden" name="pro_num" id="pro_num" value="' + pro_num + '" />');
-    
-    actionForm.attr("method", "get");
-    actionForm.attr("action", "/admin/product/pro_edit");
-    actionForm.submit();
-    
-
-  });
-
-  //상품삭제.  화살표함수 사용시 상품코드값을 읽을수 없다.
-  $(".btn_pro_del").on("click", function() {
-    
-    // text(): 입력양식태그가 아닌 일반태그의 값을 변경하거나 읽을 때 사용 
-    let pro_name = $(this).parent().parent().find(".pro_name").text();
-    if(!confirm(pro_name + " 상품을 삭제하겠읍니까?")) return;
-
-    // val() : input, select, textarea태그의 값을 변경하거나 읽을 때 사용    
-    let pro_num = $(this).parent().parent().find("input[name='check']").val();
-    
-    console.log("상품코드", pro_num);
-
-    actionForm.find("input[name='pro_num']").remove();
-
-    // <input type="hidden" name="pro_num" id="pro_num" value="24" />
-    actionForm.append('<input type="hidden" name="pro_num" id="pro_num" value="' + pro_num + '" />');
-    
-    actionForm.attr("method", "post");
-    actionForm.attr("action", "/admin/product/pro_delete");
-    actionForm.submit();
-
-
-  });
-
 
 
 }); // ready 이벤트
