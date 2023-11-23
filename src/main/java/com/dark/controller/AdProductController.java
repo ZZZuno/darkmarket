@@ -142,7 +142,6 @@ public class AdProductController {
 		model.addAttribute("pro_list", pro_list);
 		
 		int totalCount = adProductService.getTotalCount(cri);
-		
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
 	}
 	
@@ -152,5 +151,8 @@ public class AdProductController {
 	public ResponseEntity<byte[]> imageDisplay(String dateFolderName, String fileName) throws Exception {
 		return FileUtils.getFile(uploadPath + dateFolderName, fileName);
 	}
+//	@ResponseBody
+//	@PostMapping("/pro_checked_modify")
+	
 }
 

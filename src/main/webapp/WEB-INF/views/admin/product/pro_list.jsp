@@ -98,22 +98,22 @@ desired effect
 							</tr>
 							<c:forEach items="${pro_list }" var="itemVO">
 							<tr>
-								<td><input type="checkbox" name="check" value="${productVO.item_num }"></td>
+								<td><input type="checkbox" name="check" value="${itemVO.item_num }"></td>
 								<td>${itemVO.item_num }</td>
 								<td>
 									<a class="move" href="#" data-bno="${itemVO.item_num }"><img src="/admin/product/imageDisplay?dateFolderName=${itemVO.item_up_folder }&fileName=s_${itemVO.item_img }"></a>
-									<a class="move pro_name" href="#" data-bno="${itemVO.item_num }">${itemVO.item_name }</a>
+									<a class="move item_name" href="#" data-bno="${itemVO.item_num }">${itemVO.item_name }</a>
 								</td>
-								<td><input type="text" name="pro_price" value="${itemVO.item_price }"></td>
+								<td><input type="text" name="item_price" value="${itemVO.item_price }"></td>
 								<td><fmt:formatDate value="${itemVO.item_date }" pattern="yyyy-MM-dd" /></td>
 								<td>
-									<select id="pro_buy" name="pro_buy">
+									<select id="item_buy" name="item_buy">
 										<option value="Y" ${itemVO.item_buy == 'Y'? 'selected':''} >판매가능</option>
 										<option value="N" ${itemVO.item_buy == 'N'? 'selected':''}>판매불가능</option>
 									</select>
 								</td>
-								<td><button type="button" class="btn btn-primary" name="btn_pro_edit">수정</button></td>
-								<td><button type="button" class="btn btn-danger btn_pro_del">삭제</button></td>
+								<td><button type="button" class="btn btn-primary" name="btn_item_edit">수정</button></td>
+								<td><button type="button" class="btn btn-danger btn_item_del">삭제</button></td>
 							</tr>
 							</c:forEach>
 							</tbody></table>
@@ -121,8 +121,7 @@ desired effect
 					<div class="box-footer clearfix">
 						<div class="row">
 							<div class="col-md-4">
-								<button type="button" class="btn btn-primary" id="btn_check_modify1" role="button">체크상품수정1</button>	
-                <button type="button" class="btn btn-primary" id="btn_check_modify2" role="button">체크상품수정2</button>	
+								<button type="button" class="btn btn-primary" id="btn_check_modify" role="button">체크상품수정</button>	
 							<!--1)페이지번호 클릭할 때 사용  [이전]  1	2	3	4	5 [다음]  -->
 							<!--2)목록에서 상품이미지 또는 상품명 클릭할 때 사용   -->
 							  <form id="actionForm" action="" method="get">
@@ -161,7 +160,7 @@ desired effect
 								</ul>
 								</nav>
 							</div>
-							<div class="col-md-2 text-right"><button type="button" class="btn btn-primary" id="btn_pro_insert" role="button">상품등록</button></div>
+							<div class="col-md-2 text-right"><button type="button" class="btn btn-primary" id="btn_item_insert" role="button">상품등록</button></div>
 						</div>
 						
 					</div>
@@ -273,8 +272,63 @@ desired effect
       actionForm.submit();
     });
 
-    $("#btn_pro_insert").on("click", function() {
+    $("#btn_item_insert").on("click", function() {
       location.href = "/admin/product/pro_insert";
+    });
+
+    // 목록에서 제목행 체크박스 선택
+    let isCheck = true;
+    $("#checkAll").on("click", function() {
+      $("input[name='check']").prop("checked", this.checked);
+      isCheck = this.checked;
+    });
+
+    // 목록에서 데이터행 체크박스 선택
+    $("input[name='check']").on("click", function() {
+      //제목행 체크상태 변경
+      $("#checkAll").prop("checked", this.checked);
+
+      //데이터 행의 체크박스 상태를 확인해서 제목행 체크상태 변경
+      $("input[name='check']").each(function() {
+        if(!$(this).is(":checked")) {
+          $("#checkAll").prop("checked", false);
+        }
+      });
+    });
+
+    // 체크박스수정 버튼 클릭
+    $("#btn_check_modify").on("click", function() {
+      // 체크박스 유무확인
+      if($("input[name='check']:checked").length == 0) {
+        alert("수정할 상품을 체크하세요.");
+        return;
+      }
+
+      // 배열문법
+      let item_num_arr = []; // 체크된 상품코드 배열
+      let item_price_arr = []; // 체크된 상품가격 배열
+      let item_but_arr = []; // 체크된 판매여부 배열
+
+      // 데이터행에서 체크된 체크박스 선택자를 찾아서 위의 선언한 배열 변수에 push.
+      $("input[name='check']:checked").each(function() {
+        item_num_arr.push($(this.val()));
+        item_price_arr.push($(this).parent().parent().find("input[name='item_price']").val());
+        item_buy_arr.push($(this).parent().parent().find("#item_buy").val());
+      });
+
+      // ajax로 자바로 데이터 보내주기.
+
+      $.ajax({
+        url: '/admin/product/pro_checked_modify',
+        type: 'post',
+        data: {item_num_arr : item_num_arr, item_price_arr : item_price_arr, item_buy_arr : item_buy_arr},
+        dataType: 'text',
+        success : function(result) {
+          if(result == "success") {
+            alert("체크상품이 수정되었습니다.");
+          }
+        }
+      })
     });
 
 
