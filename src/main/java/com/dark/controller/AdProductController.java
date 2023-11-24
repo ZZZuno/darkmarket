@@ -10,12 +10,14 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -151,8 +153,25 @@ public class AdProductController {
 	public ResponseEntity<byte[]> imageDisplay(String dateFolderName, String fileName) throws Exception {
 		return FileUtils.getFile(uploadPath + dateFolderName, fileName);
 	}
-//	@ResponseBody
-//	@PostMapping("/pro_checked_modify")
-	
+	@ResponseBody
+	@PostMapping("/pro_checked_modify")
+	public ResponseEntity<String> pro_checked_modify(
+						@RequestParam("item_num_arr[]") List<Integer> item_num_arr,
+						@RequestParam("item_price_arr[]") List<Integer> item_price_arr,
+						@RequestParam("item_buy_arr[]") List<String> item_buy_arr) {
+		
+		log.info("상품코드:" + item_num_arr);
+		log.info("가격:" + item_price_arr);
+		log.info("판매여부:" + item_buy_arr);
+		
+		ResponseEntity<String> entity = null;
+		
+		// 체크상품 수정작업
+		adProductService.pro_checked_modify(item_num_arr, item_price_arr, item_buy_arr);
+		
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		
+		return entity;
+	}
 }
 

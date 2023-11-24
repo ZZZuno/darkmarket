@@ -33,4 +33,16 @@ public class AdProductServiceImpl implements AdProductService {
 		
 		return adProductMapper.getTotalCount(cri);
 	}
+
+	@Override
+	public void pro_checked_modify(List<Integer> item_num_arr, List<Integer> item_price_arr,
+			List<String> item_buy_arr) {
+
+		for(int i=0; i<item_num_arr.size(); i++) {
+			adProductMapper.pro_checked_modify(item_num_arr.get(i), item_price_arr.get(i), item_buy_arr.get(i));
+		}
+		
+	}
+
+
 }

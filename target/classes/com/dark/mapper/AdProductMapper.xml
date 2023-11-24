@@ -67,4 +67,18 @@ INSERT INTO
 		ITEM_NUM > 0
 	</select>
 	
+	<update id="pro_checked_modify" parameterType="map">
+	
+	UPDATE
+		ITEM_TBL
+	SET
+		ITEM_PRICE = #{item_price},
+		ITEM_BUY = #{item_buy}
+	WHERE
+		ITEM_NUM = #{item_num}	
+	
+	
+	</update>
+	
+	
 </mapper>

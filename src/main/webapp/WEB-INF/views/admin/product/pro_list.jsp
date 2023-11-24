@@ -307,11 +307,11 @@ desired effect
       // 배열문법
       let item_num_arr = []; // 체크된 상품코드 배열
       let item_price_arr = []; // 체크된 상품가격 배열
-      let item_but_arr = []; // 체크된 판매여부 배열
+      let item_buy_arr = []; // 체크된 판매여부 배열
 
       // 데이터행에서 체크된 체크박스 선택자를 찾아서 위의 선언한 배열 변수에 push.
       $("input[name='check']:checked").each(function() {
-        item_num_arr.push($(this.val()));
+        item_num_arr.push($(this).val());
         item_price_arr.push($(this).parent().parent().find("input[name='item_price']").val());
         item_buy_arr.push($(this).parent().parent().find("#item_buy").val());
       });

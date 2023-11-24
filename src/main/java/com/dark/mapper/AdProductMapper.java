@@ -2,6 +2,9 @@ package com.dark.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.dark.domain.ItemVO;
 import com.dark.dto.Criteria;
 
@@ -12,4 +15,9 @@ public interface AdProductMapper {
 	List<ItemVO> pro_list(Criteria cri);
 	
 	int getTotalCount(Criteria cri);
+	
+	void pro_checked_modify(
+			@Param("item_num") Integer item_num,
+			@Param("item_price") Integer item_price,
+			@Param("item_buy") String item_buy);
 }
