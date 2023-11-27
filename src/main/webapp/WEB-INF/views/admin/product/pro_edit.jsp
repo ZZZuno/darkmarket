@@ -66,7 +66,7 @@ desired effect
     		<div class="col-md-12">
     			<div class="box box-primary">
 					<div class="box-header with-border">
-						<h3 class="box-title mt-5">Product Edit</h3>
+						<h3 class="box-title mt-5">Item Edit</h3>
 						<form id="actionForm" action="" method="get">
 							<input type="hidden" name="pageNum" id="pageNum" value="${cri.pageNum}" />
 							<input type="hidden" name="amount"  id="amount" value="${cri.amount}" />
@@ -95,7 +95,7 @@ desired effect
 			                <select class="form-control" id="secondCategory" name="cg_code">
 			                  <option>2차카테고리 선택</option>
 			                  <c:forEach items="${second_categoryList }" var="categoryVO">
-			                  	<option value="${categoryVO.cg_code }"  ${categoryVO.cg_code == productVO.cg_code? 'selected':'' }>${categoryVO.cg_name }</option>
+			                  	<option value="${categoryVO.cg_code }"  ${categoryVO.cg_code == itemVO.cg_code? 'selected':'' }>${categoryVO.cg_name }</option>
 			                  </c:forEach>
 			                </select>
 			              </div>
@@ -107,22 +107,22 @@ desired effect
                       <input type="hidden" name="amount"  id="amount" value="${cri.amount}" />
                       <input type="hidden" name="type" id="type" value="${cri.type}" />
                       <input type="hidden" name="keyword" id="keyword" value="${cri.keyword}" />
-			              	<input type="hidden" name="pro_num" value="${productVO.pro_num }">
-			                <input type="text" class="form-control" name="pro_name" id="pro_name" value="${productVO.pro_name }">
+			              	<input type="hidden" name="item_num" value="${itemVO.item_num }">
+			                <input type="text" class="form-control" name="item_name" id="item_name" value="${itemVO.item_name }">
 			              </div>
 			              <label for="title" class="col-sm-2 col-form-label">상품가격</label>
 			              <div class="col-sm-4">
-			                <input type="text" class="form-control" name="pro_price" id="pro_price" value="${productVO.pro_price }">
+			                <input type="text" class="form-control" name="item_price" id="item_price" value="${itemVO.item_price }">
 			              </div>
 						</div>
 						<div class="form-group row">
 						  <label for="title" class="col-sm-2 col-form-label">할인율</label>
 			              <div class="col-sm-4">
-			                <input type="text" class="form-control" name="pro_discount" id="pro_discount" value="${productVO.pro_discount }">
+			                <input type="text" class="form-control" name="item_discount" id="item_discount" value="${itemVO.item_discount }">
 			              </div>
 			              <label for="title" class="col-sm-2 col-form-label">제조사</label>
 			              <div class="col-sm-4">
-			                <input type="text" class="form-control" name="pro_publisher" id="pro_publisher" value="${productVO.pro_publisher }">
+			                <input type="text" class="form-control" name="item_publisher" id="item_publisher" value="${itemVO.item_publisher }">
 			              </div>
 						</div>
 						<div class="form-group row">
@@ -130,30 +130,30 @@ desired effect
 			              <div class="col-sm-4">
 			                <input type="file" class="form-control" name="uploadFile" id="uploadFile">
 			                <!-- 상품이미지 변경시 기존이미지 삭제를 위하여, 사용됨. -->
-			                <input type="hidden" name="pro_up_folder" value="${productVO.pro_up_folder }">
-			                <input type="hidden" name="pro_img" value="${productVO.pro_img }">
+			                <input type="hidden" name="item_up_folder" value="${itemVO.item_up_folder }">
+			                <input type="hidden" name="item_img" value="${itemVO.item_img }">
 			              </div>
 			              <label for="title" class="col-sm-2 col-form-label">미리보기 이미지</label>
 			              <div class="col-sm-4">
-			               	<img id="img_preview" src="/admin/product/imageDisplay?dateFolderName=${productVO.pro_up_folder }&fileName=${productVO.pro_img }" style="width:200px;height:200px;">
+			               	<img id="img_preview" src="/admin/product/imageDisplay?dateFolderName=${itemVO.item_up_folder }&fileName=${itemVO.item_img }" style="width:200px;height:200px;">
 			              </div>
 						</div>
 						<div class="form-group row">
 						  <label for="title" class="col-sm-2 col-form-label">상품설명</label>
 			              <div class="col-sm-10">
-			                <textarea class="form-control" name="pro_content" id="pro_content" rows="3">${productVO.pro_content }</textarea>
+			                <textarea class="form-control" name="item_content" id="item_content" rows="3">${itemVO.item_content }</textarea>
 			              </div>
 			            </div>
 			            <div class="form-group row">
 						  <label for="title" class="col-sm-2 col-form-label">수량</label>
 			              <div class="col-sm-4">
-			                <input type="text" class="form-control" name="pro_amount" id="pro_amount" value="${productVO.pro_amount }">
+			                <input type="text" class="form-control" name="item_amount" id="item_amount" value="${itemVO.item_amount }">
 			              </div>
 			              <label for="title" class="col-sm-2 col-form-label">판매여부</label>
 			              <div class="col-sm-4">
-			               	<select class="form-control" id="pro_buy" name="pro_buy">
-			                  <option value="Y" ${productVO.pro_buy == 'Y'? 'selected':'' }>판매가능</option>
-			                  <option value="N" ${productVO.pro_buy == 'N'? 'selected':'' }>판매불가능</option>
+			               	<select class="form-control" id="item_buy" name="item_buy">
+			                  <option value="Y" ${itemVO.item_buy == 'Y'? 'selected':'' }>판매가능</option>
+			                  <option value="N" ${itemVO.item_buy == 'N'? 'selected':'' }>판매불가능</option>
 			                </select>
 			              </div>
 						</div>
@@ -267,25 +267,6 @@ desired effect
 <script>
   $(document).ready(function() {
 
-    // ckeditor 환경설정. 자바스크립트 Ojbect문법
-    var ckeditor_config = {
-			resize_enabled : false,
-			enterMode : CKEDITOR.ENTER_BR,
-			shiftEnterMode : CKEDITOR.ENTER_P,
-			toolbarCanCollapse : true,
-			removePlugins : "elementspath", 
-			//업로드 탭기능추가 속성. CKEditor에서 파일업로드해서 서버로 전송클릭하면 , 이 주소가 동작된다.
-			filebrowserUploadUrl: '/admin/product/imageUpload' 
-    }
-
-    CKEDITOR.replace("pro_content", ckeditor_config);
-
-    console.log("ckediotr 버전: ", CKEDITOR.version);
-
-
-
-    // 1차카테고리 선택
-    // document.getElementById("firstCategory")
     $("#firstCategory").change(function() {
       // $(this) : option태그중 선택한 option태그를 가리킴.
       let cg_parent_code = $(this).val();
@@ -321,26 +302,7 @@ desired effect
 
       });
 
-      
     });
-
-    //파일첨부시 이미지 미리보기
-    // 파일첨부에 따른 이벤트관련정보를 e라는 매개변수를 통하여, 참조가 됨.
-    $("#uploadFile").change(function(e) {
-      let file = e.target.files[0]; // 선택파일들중 첫번째 파일.
-
-      let reader = new FileReader(); // 첨부된 파일을 이용하여, File객체를 생성하는 용도
-      reader.readAsDataURL(file); // reader객체에 파일정보가 할당.
-
-
-      reader.onload = function(e) {
-        // <img id="img_preview" style="width:200px;height:200px;">
-        // e.target.result : reader객체의 이미지파일정보
-        $("#img_preview").attr("src", e.target.result);
-      }
-      
-    });
-
   });
 </script>
 </body>

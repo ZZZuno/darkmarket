@@ -16,6 +16,8 @@ public interface AdProductMapper {
 	
 	int getTotalCount(Criteria cri);
 	
+	ItemVO pro_edit(Integer item_num);
+	
 	void pro_checked_modify(
 			@Param("item_num") Integer item_num,
 			@Param("item_price") Integer item_price,

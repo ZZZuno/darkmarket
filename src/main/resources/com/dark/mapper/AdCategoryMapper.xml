@@ -30,5 +30,18 @@
 
 </select>
 
+<select id="get" parameterType="Integer" resultType="com.dark.domain.CategoryVO">
+
+	SELECT
+		CG_CODE,
+		CG_PARENT_CODE,
+		CG_NAME
+	FROM
+		CATEGORY_TBL
+	WHERE
+		CG_CODE = #{cg_code}
+
+</select>
+
 
 </mapper>

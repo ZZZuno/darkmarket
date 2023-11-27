@@ -331,6 +331,23 @@ desired effect
       })
     });
 
+    $("button[name='btn_item_edit']").on("click", function() {
+
+      // 수정 상품코드
+      let item_num = $(this).parent().parent().find("input[name='check']").val();
+
+      console.log("수정상품코드: " + item_num);
+
+      
+      //액션폼으로 보내기.
+      actionForm.append('<input type="hidden" name="item_num" id="item_num" value="' + item_num + '" />');
+
+      actionForm.attr("method", "get");
+      actionForm.attr("action", "/admin/product/pro_edit");
+      actionForm.submit();
+
+    });
+
 
 }); // ready 이벤트
 </script>

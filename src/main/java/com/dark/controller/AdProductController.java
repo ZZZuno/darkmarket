@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dark.domain.CategoryVO;
 import com.dark.domain.ItemVO;
 import com.dark.dto.Criteria;
 import com.dark.dto.PageDTO;
@@ -172,6 +174,26 @@ public class AdProductController {
 		entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		
 		return entity;
+	}
+	
+	@GetMapping("/pro_edit")
+	public void pro_edit(@ModelAttribute("cri") Criteria cri, Integer item_num, Model model) {
+		
+		// 선택한 상품정보
+		ItemVO itemVO = adProductService.pro_edit(item_num);
+		log.info("선택한 상품정보: " + itemVO);
+		
+		// 역슬래시를 슬래시로 변환하는 작업 ( \ -> / )
+		itemVO.setItem_up_folder(itemVO.getItem_up_folder().replace("\\", "/"));
+		model.addAttribute("itemVO", itemVO);
+		
+		CategoryVO firstCategory = adCategoryService.get(itemVO.getCg_code());
+		model.addAttribute("first_category", firstCategory);
+		
+		model.addAttribute("second_categoryList", adCategoryService.getSecondCategoryList(firstCategory.getCg_code()));
+		
+		
+		
 	}
 }
 

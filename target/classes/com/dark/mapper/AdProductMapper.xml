@@ -80,5 +80,15 @@ INSERT INTO
 	
 	</update>
 	
+	<select id="pro_edit" parameterType="Integer" resultType="com.dark.domain.ItemVO">
+	
+	SELECT 
+		ITEM_NUM, CG_CODE, ITEM_NAME, ITEM_PRICE, ITEM_DISCOUNT, ITEM_PUBLISHER, ITEM_CONTENT, ITEM_UP_FOLDER, ITEM_IMG, ITEM_AMOUNT, ITEM_BUY
+	FROM 
+		ITEM_TBL
+	WHERE
+		ITEM_NUM = #{item_num}
+	</select>
+	
 	
 </mapper>

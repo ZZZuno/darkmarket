@@ -44,5 +44,11 @@ public class AdProductServiceImpl implements AdProductService {
 		
 	}
 
+	@Override
+	public ItemVO pro_edit(Integer item_num) {
+		
+		return adProductMapper.pro_edit(item_num);
+	}
+
 
 }
