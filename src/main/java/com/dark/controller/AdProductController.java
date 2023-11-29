@@ -187,6 +187,7 @@ public class AdProductController {
 		itemVO.setItem_up_folder(itemVO.getItem_up_folder().replace("\\", "/"));
 		model.addAttribute("itemVO", itemVO);
 		
+		
 		CategoryVO firstCategory = adCategoryService.get(itemVO.getCg_code());
 		model.addAttribute("first_category", firstCategory);
 		
@@ -194,6 +195,34 @@ public class AdProductController {
 		
 		
 		
+	}
+	
+	@PostMapping("/pro_edit")
+	public String pro_edit(Criteria cri, ItemVO vo, MultipartFile uploadFile, RedirectAttributes rttr) throws Exception {
+		
+//		log.info("검색, 페이징 정보: " + cri);
+//		
+//		log.info("수정된 상품내용: " + vo);
+		
+		vo.setItem_up_folder(vo.getItem_up_folder().replace("/", "\\"));
+		
+		
+		if(!uploadFile.isEmpty()) {
+		FileUtils.deleteFile(uploadPath, vo.getItem_up_folder(), vo.getItem_img());
+		
+		//새 이미지 업로드
+		String dateFolder = FileUtils.getDateFolder();
+		String savedFileName = FileUtils.uploadFile(uploadPath, dateFolder, uploadFile);
+		
+		vo.setItem_up_folder(dateFolder);
+		vo.setItem_img(savedFileName);
+		
+		}
+		
+		// db
+		adProductService.pro_edit_ok(vo);
+		
+		return "redirect:/admin/product/pro_list" + cri.getListLink();
 	}
 }
 

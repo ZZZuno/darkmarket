@@ -50,5 +50,11 @@ public class AdProductServiceImpl implements AdProductService {
 		return adProductMapper.pro_edit(item_num);
 	}
 
+	@Override
+	public void pro_edit_ok(ItemVO vo) {
+		adProductMapper.pro_edit_ok(vo);
+		
+	}
+
 
 }

@@ -18,4 +18,6 @@ public interface AdProductService {
 	ItemVO pro_edit(Integer item_num);
 	
 	void pro_checked_modify(List<Integer> item_num_arr, List<Integer> item_price_arr, List<String> item_buy_arr);
+	
+	void pro_edit_ok(ItemVO vo);
 }

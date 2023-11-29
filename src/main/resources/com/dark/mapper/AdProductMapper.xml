@@ -90,5 +90,19 @@ INSERT INTO
 		ITEM_NUM = #{item_num}
 	</select>
 	
+	<update id="pro_edit_ok" parameterType="com.dark.domain.ItemVO">
+	
+		UPDATE
+			ITEM_TBL
+		SET
+			CG_CODE = #{cg_code}, ITEM_NAME = #{item_name}, ITEM_PRICE = #{item_price}, 
+			ITEM_DISCOUNT = #{item_discount}, ITEM_PUBLISHER = #{item_publisher}, 
+			ITEM_CONTENT = #{item_content}, ITEM_UP_FOLDER = #{item_up_folder}, 
+			ITEM_IMG = #{item_img}, ITEM_AMOUNT = #{item_amount}, ITEM_BUY =#{item_buy}, ITEM_UPDATEDATE = SYSDATE
+		WHERE
+			ITEM_NUM = #{item_num}
+	
+	</update>
+	
 	
 </mapper>
