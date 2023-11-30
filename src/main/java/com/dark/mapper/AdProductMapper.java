@@ -24,4 +24,6 @@ public interface AdProductMapper {
 			@Param("item_buy") String item_buy);
 	
 	void pro_edit_ok(ItemVO vo);
+	
+	void pro_delete(Integer item_num);
 }

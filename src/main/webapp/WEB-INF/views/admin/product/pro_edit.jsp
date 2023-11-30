@@ -261,6 +261,19 @@ desired effect
 <script>
   $(document).ready(function() {
 
+     // ckeditor 환경설정. 자바스크립트 Object 문법
+     var ckeditor_config = {
+      resize_enabled : false,
+      enterMode : CKEDITOR.ENTER_BR,
+      shiftEnterMode : CKEDITOR.ENTER_P,
+			toolbarCanCollapse : true,
+			removePlugins : "elementspath", 
+			//업로드 탭기능추가 속성. CKEditor에서 파일업로드해서 서버로 전송클릭하면 , 이 주소가 동작된다.
+			filebrowserUploadUrl: '/admin/product/imageUpload' 
+    }
+
+    CKEDITOR.replace("item_content", ckeditor_config);
+
     $("#firstCategory").change(function() {
       // $(this) : option태그중 선택한 option태그를 가리킴.
       let cg_parent_code = $(this).val();

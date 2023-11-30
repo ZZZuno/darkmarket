@@ -224,5 +224,19 @@ public class AdProductController {
 		
 		return "redirect:/admin/product/pro_list" + cri.getListLink();
 	}
+	
+	@GetMapping("/pro_delete")
+	public String pro_delete(Integer item_num) throws Exception {
+		
+		log.info("삭제할 상품코드: " + item_num);
+		
+		// db
+		adProductService.pro_delete(item_num);
+		
+		return "redirect:/admin/product/pro_list";
+		
+	}
+	
+	
 }
 

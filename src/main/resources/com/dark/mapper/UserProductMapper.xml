@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dark.mapper.UserProductMapper">
+
+	<!--  CDATA 섹션 -->
+	<select id="pro_list" resultType="com.dark.domain.ItemVO" parameterType="map">
+		<![CDATA[
+		select 
+    		ITEM_NUM, 
+    		CG_CODE, 
+    		ITEM_NAME, 
+    		ITEM_PRICE, 
+    		ITEM_DISCOUNT, 
+    		ITEM_PUBLISHER, 
+    		ITEM_CONTENT, 
+    		ITEM_UP_FOLDER, 
+    		ITEM_IMG, 
+    		ITEM_AMOUNT, 
+    		ITEM_BUY, 
+    		ITEM_DATE, 
+    		ITEM_UPDATEDATE
+		from 
+		    (
+		    select /*+INDEX_DESC(ITEM_TBL pk_item_num) */
+		        rownum rn, ITEM_NUM, CG_CODE, ITEM_NAME, ITEM_PRICE, ITEM_DISCOUNT, ITEM_PUBLISHER, ITEM_CONTENT, ITEM_UP_FOLDER, ITEM_IMG, ITEM_AMOUNT, ITEM_BUY, ITEM_DATE, ITEM_UPDATEDATE
+		    from 
+		        ITEM_TBL
+		    where 
+		    	CG_CODE = #{cg_code}
+		      AND
+		        rownum <= #{cri.pageNum} * #{cri.amount}
+		    )
+		where 
+		    rn > (#{cri.pageNum} -1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select
+			count(*)
+		from
+			item_tbl
+		where
+			cg_code = #{cg_code}
+	</select>
+
+</mapper>

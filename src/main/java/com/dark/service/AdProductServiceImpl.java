@@ -56,5 +56,11 @@ public class AdProductServiceImpl implements AdProductService {
 		
 	}
 
+	@Override
+	public void pro_delete(Integer item_num) {
+		adProductMapper.pro_delete(item_num);
+		
+	}
+
 
 }
