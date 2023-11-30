@@ -20,4 +20,6 @@ public interface AdProductService {
 	void pro_checked_modify(List<Integer> item_num_arr, List<Integer> item_price_arr, List<String> item_buy_arr);
 	
 	void pro_edit_ok(ItemVO vo);
+	
+	void pro_delete(Integer item_num);
 }

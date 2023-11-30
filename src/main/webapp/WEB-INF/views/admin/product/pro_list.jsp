@@ -338,7 +338,9 @@ desired effect
 
       console.log("수정상품코드: " + item_num);
 
-      
+      //뒤로가기 클릭후 다시 수정버튼 클릭시 코드 중복되는 부분때문에 제거.
+      actionForm.find("input[name='pro_num']").remove();
+
       //액션폼으로 보내기.
       actionForm.append('<input type="hidden" name="item_num" id="item_num" value="' + item_num + '" />');
 
@@ -346,6 +348,21 @@ desired effect
       actionForm.attr("action", "/admin/product/pro_edit");
       actionForm.submit();
 
+    });
+
+    $(".btn_item_del").on("click", function() {
+
+      let item_name = $(this).parent().parent().find(".item_name").text();
+      if(!confirm(item_name + " 상품을 삭제하시겠습니까?")) return;
+
+      let item_num = $(this).parent().parent().find("input[name='check']").val();
+
+      actionForm.append('<input type="hidden" name="item_num" id="item_num" value="' + item_num + '" />');
+
+      actionForm.attr("method", "get");
+      actionForm.attr("action", "/admin/product/pro_delete");
+      actionForm.submit();
+      
     });
 
 

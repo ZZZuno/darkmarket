@@ -42,7 +42,7 @@ INSERT INTO
     		ITEM_NUM, CG_CODE, ITEM_NAME, ITEM_PRICE, ITEM_DISCOUNT, ITEM_PUBLISHER, ITEM_CONTENT, ITEM_UP_FOLDER, ITEM_IMG, ITEM_AMOUNT, ITEM_BUY, ITEM_DATE, ITEM_UPDATEDATE
 		from 
 		    (
-		    select /*+INDEX_DESC(PRODUCT_TBL pk_pro_num) */
+		    select /*+INDEX_DESC(ITEM_TBL pk_item_num) */
 		        rownum rn, ITEM_NUM, CG_CODE, ITEM_NAME, ITEM_PRICE, ITEM_DISCOUNT, ITEM_PUBLISHER, ITEM_CONTENT, ITEM_UP_FOLDER, ITEM_IMG, ITEM_AMOUNT, ITEM_BUY, ITEM_DATE, ITEM_UPDATEDATE
 		    from 
 		        ITEM_TBL
@@ -103,6 +103,15 @@ INSERT INTO
 			ITEM_NUM = #{item_num}
 	
 	</update>
+	
+	<delete id="pro_delete" parameterType="Integer">
+	
+	DELETE FROM
+		ITEM_TBL
+	WHERE
+		ITEM_NUM = #{item_num}
+		
+	</delete>
 	
 	
 </mapper>
