@@ -107,26 +107,35 @@
 
       let actionForm = $("#actionForm");
 
-$("button[name='btn_cart_add']").on("click", function() {
-  console.log("장바구니 추가");
+      $("button[name='btn_cart_add']").on("click", function() {
+    	  console.log("장바구니 추가");
 
-  $.ajax({
-    url: '/user/cart/cart_add',
-    type: 'post',
-    data: {item_num : $(this).data("item_num"), cart_amount : 1},
-    dataType: 'text',
-    success: function(result) {
-      if(result == 'success') {
-        alert("장바구니가 추가됨");
-        if(confirm("장바구니로 이동하시겠습니까?")) {
-          location.href = "/user/cart/cart_list";
-        }
-      }
-    }
+    	  $.ajax({
+    	    url: '/user/cart/cart_add',
+    	    type: 'post',
+    	    data: {item_num : $(this).data("item_num"), cart_amount : 1},
+    	    dataType: 'text',
+    	    beforeSend : function(xhr) {
+    	        xhr.setRequestHeader("AJAX", "true");
+    	      },
+    	    success: function(result) {
+    	      if(result == 'success') {
+    	        alert("장바구니가 추가됨");
+    	        if(confirm("장바구니로 이동하시겠습니까?")) {
+    	          location.href = "/user/cart/cart_list";
+    	        }
+    	      }
+    	      },
+    	      error: function(xhr, status, error) {
+    	          alert(status);
+    	          alert("로그인 페이지로 이동합니다.");
+    	          location.href = "/member/login";
+    	       
+    	    }
 
-  })
+    	  });
 
-});
+    	});
 
 $(".btn_item_img").on("click", function() {
   // console.log("상품 상세페이지");

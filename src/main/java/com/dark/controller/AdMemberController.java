@@ -28,7 +28,7 @@ public class AdMemberController {
 	@GetMapping("/member_list")
 	public void member_list(Criteria cri, Model model) {
 		
-		cri.setAmount(2);
+		cri.setAmount(8);
 		
 		List<MemberVO> vo = memberService.member_list(cri);
 		

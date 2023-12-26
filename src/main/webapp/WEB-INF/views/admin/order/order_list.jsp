@@ -163,8 +163,6 @@ desired effect
 					</div>
 					<div class="box-footer clearfix">
 						<div class="row">
-							<div class="col-md-4">
-								
 							<!--1)페이지번호 클릭할 때 사용  [이전]  1	2	3	4	5 [다음]  -->
 							<!--2)목록에서 상품이미지 또는 상품명 클릭할 때 사용   -->
 							  <form id="actionForm" action="" method="get">
@@ -172,10 +170,8 @@ desired effect
 								<input type="hidden" name="amount"  id="amount" value="${pageMaker.cri.amount}" />
 								<input type="hidden" name="type" id="type" value="${pageMaker.cri.type}" />
 								<input type="hidden" name="keyword" id="keyword" value="${pageMaker.cri.keyword}" />
-								
 							  </form>
-							</div>
-							<div class="col-md-6 text-center">
+							<div class="col-md-12 text-center">
 								<nav aria-label="...">
 								<ul class="pagination">
 									<!-- 이전 표시여부 -->

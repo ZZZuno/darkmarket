@@ -71,7 +71,7 @@
         </td>
         <td>${cartDTO.item_name }</td>
         <td><span id="unitPrice">${cartDTO.item_price}</span></td>
-        <td><input type="number" name="cart_amount" value="${cartDTO.cart_amount }" style="width: 35px;"> <button type="button" name="btn_cart_amount_change" class="btn btn-danger">변경</button></td>
+        <td><input type="number" name="cart_amount" value="${cartDTO.cart_amount }" style="width: 45px;"> <button type="button" name="btn_cart_amount_change" class="btn btn-danger">변경</button></td>
         <td><span class="unitTotalprice" id="unitTotalprice">${(cartDTO.item_price * cartDTO.cart_amount)}</span></td>
         <td><button type="button" name="btn_ajax_cart_del" class="btn btn-danger">삭제</button></td>
         <!-- <td><button type="button" name="btn_nonajax_cart_del" class="btn btn-danger">삭제(non-ajax)</button></td>  -->

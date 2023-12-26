@@ -202,6 +202,9 @@ desired effect
 <script src="/bower_components/ckeditor/ckeditor.js"></script>
 <script>
 
+// 취소버튼 클릭
+document.getElementById("btn_cancel").addEventListener("click", fn_cancel);
+
 //form 태그 참조
 let curListInfo = document.getElementById("curListInfo");
 

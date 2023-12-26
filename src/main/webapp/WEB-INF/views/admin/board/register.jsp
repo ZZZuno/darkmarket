@@ -185,6 +185,7 @@ desired effect
 <%@include file="/WEB-INF/views/admin/include/plugin2.jsp" %>
 <script src="/bower_components/ckeditor/ckeditor.js"></script>
 <script>
+
  document.getElementById("btn_cancel").addEventListener("click", fn_cancel);
 
 function fn_cancel() {
