@@ -1,0 +1,11 @@
+CREATE TABLE CART_TBL(
+        CART_CODE        NUMBER,
+        ITEM_NUM         NUMBER          NOT NULL,
+        DARK_ID         VARCHAR2(15)    NOT NULL,
+        CART_AMOUNT      NUMBER          NOT NULL,
+        FOREIGN KEY(ITEM_NUM) REFERENCES ITEM_TBL(ITEM_NUM) ON DELETE CASCADE,
+        FOREIGN KEY(DARK_ID) REFERENCES DARK_TBL(DARK_ID) ON DELETE CASCADE,
+        CONSTRAINT PK_CART_CODE primary key(CART_CODE)
+);
+
+create sequence seq_cart_code;
