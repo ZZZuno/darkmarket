@@ -24,4 +24,5 @@ public class ItemVO {
 	
 	private Date item_date;
 	private Date item_updatedate;
+	private String item_title;
 }

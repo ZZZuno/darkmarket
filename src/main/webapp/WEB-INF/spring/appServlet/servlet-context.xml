@@ -53,6 +53,41 @@
 		<beans:constructor-arg value="C:\\dev\\upload\\ckeditor\\"></beans:constructor-arg>
 	</beans:bean>
 	
+	<!-- 사용자 -->
+	<beans:bean id="userInterceptor" class="com.dark.interceptor.UserInterceptor"></beans:bean>
+   
+   <interceptors>
+      <interceptor>
+         <!-- <mapping path="/member/*" />  -->
+         <!-- <exclude-mapping path="/member/confirmPw"/> -->
+         
+         <mapping path="/member/confirmPw"/>
+         <mapping path="/member/modify"/>
+         <mapping path="/member/mypage"/>
+         <mapping path="/member/delConfirmPw"/>
+         
+
+         <mapping path="/user/cart/*"/>
+         
+         <mapping path="/user/order/*"/>
+                  
+         
+         <beans:ref bean="userInterceptor"/>
+      </interceptor>
+   </interceptors>
+   
+   <!-- 관리자 -->
+   <beans:bean id="adminInterceptor" class="com.dark.interceptor.AdminInterceptor"></beans:bean>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/admin/**"/>
+			<exclude-mapping path="/admin/intro"/>
+			<exclude-mapping path="/admin/admin_ok"/>
+			<beans:ref bean="adminInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 	<context:component-scan base-package="com.dark.controller" />
 	
 	

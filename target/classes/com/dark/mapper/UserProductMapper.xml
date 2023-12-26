@@ -21,10 +21,11 @@
     		ITEM_BUY, 
     		ITEM_DATE, 
     		ITEM_UPDATEDATE
+    		ITEM_TITLE
 		from 
 		    (
 		    select /*+INDEX_DESC(ITEM_TBL pk_item_num) */
-		        rownum rn, ITEM_NUM, CG_CODE, ITEM_NAME, ITEM_PRICE, ITEM_DISCOUNT, ITEM_PUBLISHER, ITEM_CONTENT, ITEM_UP_FOLDER, ITEM_IMG, ITEM_AMOUNT, ITEM_BUY, ITEM_DATE, ITEM_UPDATEDATE
+		        rownum rn, ITEM_NUM, CG_CODE, ITEM_NAME, ITEM_PRICE, ITEM_DISCOUNT, ITEM_PUBLISHER, ITEM_CONTENT, ITEM_UP_FOLDER, ITEM_IMG, ITEM_AMOUNT, ITEM_BUY, ITEM_DATE, ITEM_UPDATEDATE, ITEM_TITLE
 		    from 
 		        ITEM_TBL
 		    where 
@@ -34,16 +35,74 @@
 		    )
 		where 
 		    rn > (#{cri.pageNum} -1) * #{cri.amount}
+		and
+			ITEM_BUY = 'Y'
 		]]>
 	</select>
 	
-	<select id="getTotalCount" resultType="int">
+	<select id="getTotalCount" parameterType="Integer" resultType="int">
 		select
 			count(*)
 		from
 			item_tbl
 		where
 			cg_code = #{cg_code}
+	</select>
+	
+	<select id="pro_detail" parameterType="Integer" resultType="com.dark.domain.ItemVO">
+	
+		SELECT
+			ITEM_NUM, CG_CODE, ITEM_NAME, ITEM_PRICE, ITEM_DISCOUNT, ITEM_PUBLISHER, 
+			ITEM_CONTENT, ITEM_UP_FOLDER, ITEM_IMG, ITEM_AMOUNT, ITEM_BUY, ITEM_DATE, ITEM_UPDATEDATE
+		FROM
+			ITEM_TBL
+		WHERE
+			ITEM_NUM = #{item_num}
+	
+	</select>
+	
+	<select id="pro_title" resultType="com.dark.domain.ItemVO" parameterType="com.dark.dto.Criteria">
+		<![CDATA[
+		select 
+    		ITEM_NUM, 
+    		CG_CODE, 
+    		ITEM_NAME, 
+    		ITEM_PRICE, 
+    		ITEM_DISCOUNT, 
+    		ITEM_PUBLISHER, 
+    		ITEM_CONTENT, 
+    		ITEM_UP_FOLDER, 
+    		ITEM_IMG, 
+    		ITEM_AMOUNT, 
+    		ITEM_BUY, 
+    		ITEM_DATE, 
+    		ITEM_UPDATEDATE
+    		ITEM_TITLE
+		from 
+		    (
+		    select /*+INDEX_DESC(ITEM_TBL pk_item_num) */
+		        rownum rn, ITEM_NUM, CG_CODE, ITEM_NAME, ITEM_PRICE, ITEM_DISCOUNT, ITEM_PUBLISHER, ITEM_CONTENT, ITEM_UP_FOLDER, ITEM_IMG, ITEM_AMOUNT, ITEM_BUY, ITEM_DATE, ITEM_UPDATEDATE, ITEM_TITLE
+		    from 
+		        ITEM_TBL
+		    where 
+		    	ITEM_TITLE = 'Y'
+		      AND
+		        rownum <= #{pageNum} * #{amount}
+		    )
+		where 
+		    rn > (#{pageNum} -1) * #{amount}
+		and
+			ITEM_BUY = 'Y'
+		]]>
+	</select>
+	
+	<select id="getTitleTotalCount" parameterType="String" resultType="int">
+		select
+			count(*)
+		from
+			item_tbl
+		where
+			item_title = 'Y'
 	</select>
 
 </mapper>

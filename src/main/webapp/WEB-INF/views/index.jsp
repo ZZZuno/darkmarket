@@ -52,58 +52,48 @@
 <%@include file="/WEB-INF/views/comm/category_menu.jsp" %>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-  <h1 class="display-4">Pricing</h1>
-  <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>
+  <h2>대표상품</h2>
 </div>
 
 <div class="container">
-  <div class="card-deck mb-3 text-center">
-    <div class="card mb-4 shadow-sm">
-      <div class="card-header">
-        <h4 class="my-0 font-weight-normal">Free</h4>
-      </div>
-      <div class="card-body">
-        <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
-        <ul class="list-unstyled mt-3 mb-4">
-          <li>10 users included</li>
-          <li>2 GB of storage</li>
-          <li>Email support</li>
-          <li>Help center access</li>
-        </ul>
-        <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</button>
-      </div>
+  <div class="card-deck mb-3 text-center row">
+  <c:forEach items="${pro_list }" var="itemVO">
+  <div class="col-md-3">
+     
+          <div class="card mb-4 shadow-sm">
+            <img class="btn_item_img" style="cursor: pointer" width="100%" height="200" data-item_num = "${itemVO.item_num}" src="/user/product/imageDisplay?dateFolderName=${itemVO.item_up_folder }&fileName=${itemVO.item_img }">
+            <div class="card-body">
+              <p class="card-text btn_item_img" style="cursor: pointer" data-item_num = "${itemVO.item_num}">${itemVO.item_name }</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" name="btn_cart_add" data-item_num="${itemVO.item_num }" class="btn btn-sm btn-outline-secondary">Cart</button>
+                </div>
+                <small class="text-muted">
+                	<fmt:formatNumber type="currencyt" pattern="₩#,###" value="${itemVO.item_price }"></fmt:formatNumber>
+                </small>
+              </div>
+            </div>
+          </div>
+        
     </div>
-    <div class="card mb-4 shadow-sm">
-      <div class="card-header">
-        <h4 class="my-0 font-weight-normal">Pro</h4>
-      </div>
-      <div class="card-body">
-        <h1 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h1>
-        <ul class="list-unstyled mt-3 mb-4">
-          <li>20 users included</li>
-          <li>10 GB of storage</li>
-          <li>Priority email support</li>
-          <li>Help center access</li>
-        </ul>
-        <button type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
-      </div>
+    </c:forEach>
     </div>
-    <div class="card mb-4 shadow-sm">
-      <div class="card-header">
-        <h4 class="my-0 font-weight-normal">Enterprise</h4>
-      </div>
-      <div class="card-body">
-        <h1 class="card-title pricing-card-title">$29 <small class="text-muted">/ mo</small></h1>
-        <ul class="list-unstyled mt-3 mb-4">
-          <li>30 users included</li>
-          <li>15 GB of storage</li>
-          <li>Phone and email support</li>
-          <li>Help center access</li>
-        </ul>
-        <button type="button" class="btn btn-lg btn-block btn-primary">Contact us</button>
-      </div>
-    </div>
-  </div>
+    <div class="row text-center">
+		<div class="col-md-12">
+		<!--1)페이지번호 클릭할 때 사용  [이전]  1	2	3	4	5 [다음]  -->
+		<!--2)목록에서 상품이미지 또는 상품명 클릭할 때 사용   -->
+		  <form id="actionForm" action="" method="get">
+			<input type="hidden" name="pageNum" id="pageNum" value="${pageMaker.cri.pageNum}" />
+			<input type="hidden" name="amount"  id="amount" value="${pageMaker.cri.amount}" />
+			<input type="hidden" name="type" id="type" value="${pageMaker.cri.type}" />
+			<input type="hidden" name="keyword" id="keyword" value="${pageMaker.cri.keyword}" />
+			
+			<input type="hidden" name="cg_code" id="cg_code" value="${cg_code}" />
+			<input type="hidden" name="cg_name" id="cg_name" value="${cg_name}" />
+			
+		  </form>
+		</div>
+	</div>
 
   <%@include file="/WEB-INF/views/comm/footer.jsp" %>
 </div>
@@ -111,7 +101,49 @@
 <%@include file="/WEB-INF/views/comm/plugIn.jsp" %>
 <!-- 카테고리 메뉴 자바스크립트 작업소스 -->
 <script src="/js/category_menu.js"></script>
-    
+
+<script>
+    $(document).ready(function() {
+
+      let actionForm = $("#actionForm");
+
+$("button[name='btn_cart_add']").on("click", function() {
+  console.log("장바구니 추가");
+
+  $.ajax({
+    url: '/user/cart/cart_add',
+    type: 'post',
+    data: {item_num : $(this).data("item_num"), cart_amount : 1},
+    dataType: 'text',
+    success: function(result) {
+      if(result == 'success') {
+        alert("장바구니가 추가됨");
+        if(confirm("장바구니로 이동하시겠습니까?")) {
+          location.href = "/user/cart/cart_list";
+        }
+      }
+    }
+
+  })
+
+});
+
+$(".btn_item_img").on("click", function() {
+  // console.log("상품 상세페이지");
+
+  actionForm.attr("action", "/user/product/pro_detail");
+
+  let item_num = $(this).data("item_num");
+
+  actionForm.find("input[name='item_num']").remove();
+
+  actionForm.append("<input type='hidden' name='item_num' value='"+ item_num +"' />")
+  actionForm.submit();
+
+});
+        
+    }); // ready event end
+    </script>
   </body>
 </html>
     

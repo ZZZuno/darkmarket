@@ -28,6 +28,24 @@ public class UserProductServiceImpl implements UserProductService {
 		return userProductMapper.getTotalCount(cg_code);
 	}
 
+	@Override
+	public ItemVO pro_detail(Integer item_num) {
+		
+		return userProductMapper.pro_detail(item_num);
+	}
+
+	@Override
+	public List<ItemVO> pro_title(Criteria cri) {
+		
+		return userProductMapper.pro_title(cri);
+	}
+
+	@Override
+	public int getTitleTotalCount(String item_title) {
+		
+		return userProductMapper.getTitleTotalCount(item_title);
+	}
+
 
 
 

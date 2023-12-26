@@ -50,12 +50,12 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Page Header
-        <small>Optional description</small>
+        상품관리
+        <small>등록</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> 상품관리</a></li>
+        <li class="active">등록</li>
       </ol>
     </section>
 
@@ -66,7 +66,7 @@ desired effect
     		<div class="col-md-12">
     			<div class="box box-primary">
 					<div class="box-header with-border">
-						<h3 class="box-title mt-5">Product Insert</h3>
+						<h3 class="box-title mt-5">등록</h3>
 					</div>
 					<!-- 절대경로 /board/register -->
 					<form role="form" method="post" action="/admin/product/pro_insert" enctype="multipart/form-data">
@@ -134,8 +134,17 @@ desired effect
 			                  <option value="Y">판매가능</option>
 			                  <option value="N">판매불가능</option>
 			                </select>
-			              </div>
-						</div>
+			                </div>
+			                </div>
+                      <div class="form-group row">
+                      <label for="title" class="col-sm-2 col-form-label">대표여부</label>
+			              <div class="col-sm-4">
+			               	<select class="form-control" id="item_title" name="item_title">
+			                  <option value="Y">Y</option>
+			                  <option value="N" selected>N</option>
+			                </select>
+                    </div>
+                    </div>
 					
 						
 					  </div>

@@ -1,8 +1,11 @@
 package com.dark.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.dark.domain.MemberVO;
+import com.dark.dto.Criteria;
 import com.dark.dto.IdFindDTO;
 
 public interface MemberMapper {
@@ -22,4 +25,8 @@ public interface MemberMapper {
 	MemberVO idFind(String dark_name);
 	
 	void updatePassword(@Param("id")  String id, @Param("encryptedPassword") String encryptedPassword);
+	
+	List<MemberVO>member_list(Criteria cri);
+	
+	int getTotalCount(Criteria cri);
 }

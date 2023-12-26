@@ -11,9 +11,9 @@
           <img src="/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p>관리자</p>
           <!-- Status -->
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <a href="#"><i class="fa fa-circle text-success"></i> 온라인</a>
         </div>
       </div>
 
@@ -33,8 +33,7 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+        <li class="active"><a href="/admin/board/list"><i class="fa fa-link"></i> <span>공지사항</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>상품관리</span>
             <span class="pull-right-container">
@@ -53,7 +52,7 @@
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">주문목록</a></li>
+            <li><a href="/admin/order/order_list">주문목록</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -63,7 +62,7 @@
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">회원목록</a></li>
+            <li><a href="/admin/member/member_list">회원목록</a></li>
           </ul>
         </li>
       </ul>

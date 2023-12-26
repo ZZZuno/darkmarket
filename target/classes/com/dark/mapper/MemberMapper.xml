@@ -2,6 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dark.mapper.MemberMapper">
 
+
+<!-- 공통된 sql구문작업 : 검색조건 -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND" prefixOverrides="OR">
+			<foreach collection="typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'N'.toString()">
+                            DARK_ID like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'C'.toString()">
+                            DARK_NAME like '%' || #{keyword} || '%'
+						</when>					
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	
+	</sql>
+	
 <select id="idCheck" parameterType="String" resultType="String">
 SELECT 
 	dark_id
@@ -11,6 +31,8 @@ WHERE
 	DARK_ID = #{dark_id}
 
 </select>
+
+
 
 <insert id="join" parameterType="com.dark.domain.MemberVO">
 INSERT INTO DARK_TBL(DARK_ID, DARK_NAME, DARK_EMAIL, DARK_PASSWORD, DARK_ZIPCODE, DARK_ADDR, DARK_DEADDR, DARK_PHONE)
@@ -98,5 +120,40 @@ WHERE
 
 
 </update>
+
+
+
+<!--  CDATA 섹션 -->
+	<select id="member_list" resultType="com.dark.domain.MemberVO" parameterType="com.dark.dto.Criteria">
+		<![CDATA[
+		select 
+    		DARK_ID, DARK_NAME, DARK_EMAIL, DARK_ADDR, DARK_DEADDR, DARK_PHONE, DARK_LASTLOGIN, DARK_UPDATEDATE
+		from 
+		    (
+		    select /*+INDEX_DESC(DARK_TBL DARK_TBL_PK) */
+		        rownum rn, DARK_ID, DARK_NAME, DARK_EMAIL, DARK_ADDR, DARK_DEADDR, DARK_PHONE, DARK_LASTLOGIN, DARK_UPDATEDATE
+		    from 
+		        DARK_TBL
+		    where 
+		    ]]>
+		    
+		    <include refid="criteria"></include>
+		    
+		    <![CDATA[
+		        rownum <= #{pageNum} * #{amount}
+		    )
+		where 
+		    rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from DARK_TBL where
+		
+		<include refid="criteria"></include>
+		dark_id is not null
+		
+	</select>
+	
 
 </mapper>

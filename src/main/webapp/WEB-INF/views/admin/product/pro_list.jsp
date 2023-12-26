@@ -50,12 +50,12 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Page Header
-        <small>Optional description</small>
+        상품관리
+        <small>목록</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> 상품관리</a></li>
+        <li class="active">목록</li>
       </ol>
     </section>
 
@@ -66,7 +66,7 @@ desired effect
     		<div class="col-md-12">
     			<div class="box">
 					<div class="box-header with-border">
-					<h3 class="box-title">Product List</h3>
+					<h3 class="box-title">목록</h3>
 					</div>
 
 					<div class="box-body">
@@ -120,7 +120,7 @@ desired effect
 					</div>
 					<div class="box-footer clearfix">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<button type="button" class="btn btn-primary" id="btn_check_modify" role="button">체크상품수정</button>	
 							<!--1)페이지번호 클릭할 때 사용  [이전]  1	2	3	4	5 [다음]  -->
 							<!--2)목록에서 상품이미지 또는 상품명 클릭할 때 사용   -->
@@ -132,7 +132,7 @@ desired effect
 								
 							  </form>
 							</div>
-							<div class="col-md-6 text-center">
+							<div class="col-md-8 text-center">
 								<nav aria-label="...">
 								<ul class="pagination">
 									<!-- 이전 표시여부 -->

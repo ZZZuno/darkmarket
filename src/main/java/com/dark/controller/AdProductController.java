@@ -134,7 +134,7 @@ public class AdProductController {
 	@GetMapping("/pro_list")
 	public void pro_list(Criteria cri, Model model) throws Exception {
 		
-		cri.setAmount(2);
+		cri.setAmount(5);
 		
 		List<ItemVO> pro_list = adProductService.pro_list(cri);
 		
@@ -181,12 +181,13 @@ public class AdProductController {
 		
 		// 선택한 상품정보
 		ItemVO itemVO = adProductService.pro_edit(item_num);
+		
+		
 		log.info("선택한 상품정보: " + itemVO);
 		
 		// 역슬래시를 슬래시로 변환하는 작업 ( \ -> / )
 		itemVO.setItem_up_folder(itemVO.getItem_up_folder().replace("\\", "/"));
 		model.addAttribute("itemVO", itemVO);
-		
 		
 		CategoryVO firstCategory = adCategoryService.get(itemVO.getCg_code());
 		model.addAttribute("first_category", firstCategory);

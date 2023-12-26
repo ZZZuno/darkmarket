@@ -50,12 +50,12 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Page Header
-        <small>Optional description</small>
+        상품관리
+        <small>수정</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> 상품관리</a></li>
+        <li class="active">수정</li>
       </ol>
     </section>
 
@@ -66,7 +66,7 @@ desired effect
     		<div class="col-md-12">
     			<div class="box box-primary">
 					<div class="box-header with-border">
-						<h3 class="box-title mt-5">Item Edit</h3>
+						<h3 class="box-title mt-5">수정</h3>
 					</div>
 					<!-- 절대경로 /board/register -->
 					<form role="form" method="post" action="/admin/product/pro_edit" enctype="multipart/form-data">
@@ -81,15 +81,15 @@ desired effect
 			                <select class="form-control" id="firstCategory">
 			                  <option>1차카테고리 선택</option>
 			                  <c:forEach items="${firstCategoryList }" var="categoryVO">
-			                  	<option value="${categoryVO.cg_code }"  ${categoryVO.cg_code == first_category.cg_parent_code? 'selected':'' }>${categoryVO.cg_name }</option>
+			                  	<option value="${categoryVO.cg_code }" ${categoryVO.cg_code == first_category.cg_parent_code ? 'selected':'' }>${categoryVO.cg_name }</option>
 			                  </c:forEach>
 			                </select>
 			              </div>
 			              <div class="col-sm-3">
 			                <select class="form-control" id="secondCategory" name="cg_code">
-			                  <option>2차카테고리 선택</option>
+			                  <option>2차 카테고리 선택</option>
 			                  <c:forEach items="${second_categoryList }" var="categoryVO">
-			                  	<option value="${categoryVO.cg_code }"  ${categoryVO.cg_code == itemVO.cg_code? 'selected':'' }>${categoryVO.cg_name }</option>
+			                  	<option value="${categoryVO.cg_code }" ${categoryVO.cg_code == itemVO.cg_code ? 'selected':'' }>${categoryVO.cg_name }</option>
 			                  </c:forEach>
 			                </select>
 			              </div>
@@ -151,6 +151,15 @@ desired effect
 			                </select>
 			              </div>
 						</div>
+						<div class="form-group row">
+                      <label for="title" class="col-sm-2 col-form-label">대표여부</label>
+			              <div class="col-sm-4">
+			               	<select class="form-control" id="item_title" name="item_title">
+			                  <option value="Y" ${itemVO.item_title == 'Y'? 'selected':'' }>Y</option>
+			                  <option value="N" ${itemVO.item_title == 'N'? 'selected':'' }>N</option>
+			                </select>
+                    </div>
+                    </div>
 					
 						
 					  </div>
@@ -274,42 +283,40 @@ desired effect
 
     CKEDITOR.replace("item_content", ckeditor_config);
 
-    $("#firstCategory").change(function() {
-      // $(this) : option태그중 선택한 option태그를 가리킴.
-      let cg_parent_code = $(this).val();
+     function preselectSecondaryCategory() {
+    	    let selectedPrimaryCategory = $("#firstCategory").val();
+    	    let url = "/admin/category/secondCategory/" + selectedPrimaryCategory;
 
-      // console.log("1차카테고리 코드", cg_parent_code);
+    	    $.getJSON(url, function(secondCategoryList) {
+    	      let secondCategory = $("#secondCategory");
+    	      let optionStr = "";
 
-      // 1차카테고리 선택에 의한 2차카테고리 정보를 가져오는 url
-      let url = "/admin/category/secondCategory/" + cg_parent_code; // + ".json";
+    	      secondCategory.find("option").remove();
+    	      secondCategory.append("<option value=''>2차 카테고리 선택</option>");
 
-      // $.getJSON() : 스프링에 요청시 데이타를 json으로 받는 기능. ajax기능제공.
-      $.getJSON(url, function(secondCategoryList) {
-        // console.log("2차카테고리 정보", secondCategoryList);
+    	      for (let i = 0; i < secondCategoryList.length; i++) {
+    	        optionStr += "<option value='" + secondCategoryList[i].cg_code + "'>" + secondCategoryList[i].cg_name + "</option>";
+    	      }
 
-        // console.log("2차카테고리 개수", secondCategoryList.length);
+    	      secondCategory.append(optionStr);
 
-        // 2차카테고리 select태그참조.
-        let secondCategory = $("#secondCategory");
-        let optionStr = "";
-        // <option value='10'>바지</option>
-        
-        // find("css선택자") : 태그명, id속성이름, class속성이름
-        secondCategory.find("option").remove(); // 2차카테고리의 option제거
-        secondCategory.append("<option value=''>2차 카테고리 선택</option>");
+    	    });
+    	  }
 
-        for(let i=0; i<secondCategoryList.length; i++) {
-          optionStr += "<option value='" + secondCategoryList[i].cg_code + "'>" + secondCategoryList[i].cg_name + "</option>";
+    	  preselectSecondaryCategory();
 
-        }
+    	  var itemVO_cg_code = "${itemVO.cg_code}";
 
-        // console.log(optionStr);
-        secondCategory.append(optionStr); // 2차카테고리 <option>태그들이 추가.
+    	    // Find the select element
+    	    var secondCategorySelect = document.getElementById("secondCategory");
 
-
-      });
-
-    });
+    	    // Loop through the options to find and set the selected attribute
+    	    for (var i = 0; i < secondCategorySelect.options.length; i++) {
+    	        if (secondCategorySelect.options[i].value === itemVO_cg_code) {
+    	            secondCategorySelect.options[i].selected = true;
+    	            break; // Stop the loop once the option is selected
+    	        }
+    	    }
   });
 </script>
 </body>

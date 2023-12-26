@@ -38,7 +38,7 @@
       <td class="rew_content">{{rew_content}}</td>
       <td class="rew_score">{{displayStar rew_score}}</td>
       <td class="rew_regdate">{{convertDate rew_regdate}}</td>
-      <td class="rew_bigo">{{authControlView mbsp_id rew_num rew_score}}</td>
+      <td class="rew_bigo">{{authControlView dark_id rew_num rew_score}}</td>
     </tr>
     {{/each}}
   </tbody>
@@ -95,23 +95,23 @@
 <%@include file="/WEB-INF/views/comm/category_menu.jsp" %>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-  <p>2차카테고리 : ${cg_name }</p>
+ 
 </div>
 
 <div class="container">
   <div class="card-deck mb-3 text-center row">
     <div class="col-md-6">
-      <img class="btn_pro_img" width="75%" height="300" data-pro_num = "${productVO.pro_num}" src="/user/product/imageDisplay?dateFolderName=${productVO.pro_up_folder }&fileName=${productVO.pro_img }">
+      <img class="btn_pro_img" width="75%" height="300" data-item_num = "${itemVO.item_num}" src="/user/product/imageDisplay?dateFolderName=${itemVO.item_up_folder }&fileName=${itemVO.item_img }">
     </div>
     <div class="col-md-6">
       <div class="row text-left">
         <div class="col">
-          ${productVO.pro_name }
+          ${itemVO.item_name }
         </div>
       </div>
       <div class="row text-left">
         <div class="col">
-          <span id="unit_price">${productVO.pro_price }</span>
+          <span id="unit_price">${itemVO.item_price }원</span>
         </div>
     </div>
       <div class="row text-left">
@@ -121,19 +121,22 @@
     </div>
       <div class="row text-left">
         <div class="col">
-          총상품금액 : <span id="tot_price">${productVO.pro_price }</span>
+          총상품금액 : <span id="tot_price">${itemVO.item_price }원</span>
         </div>
       </div>
       <div class="row">
         <div class="col-md-6">
-          <button type="button" class="btn btn-link" name="btn_order" data-pro_num="${productVO.pro_num}">구매하기</button>
+          <button type="button" class="btn btn-danger btn-lg btn-block" name="btn_order" data-item_num="${itemVO.item_num}">구매하기</button>
         </div>
         <div class="col-md-6">
-          <button type="button" class="btn btn-link" name="btn_cart_add" data-pro_num="${productVO.pro_num}">장바구니</button>
+          <button type="button" class="btn btn-secondary btn-lg btn-block" name="btn_cart_add" data-item_num="${itemVO.item_num}">장바구니</button>
         </div>
       </div>
     </div>
     </div>
+    </div>
+    <div>
+    <br>
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -143,7 +146,7 @@
             <li><a href="#tabs-proreview">상품후기</a></li>
           </ul>
           <div id="tabs-prodetail">
-            <p>${productVO.pro_content}</p>
+            <p>${itemVO.item_content}</p>
           </div>
           <div id="tabs-proreview">
             <p>상품후기 목록</p>
@@ -214,8 +217,11 @@
           $.ajax({
             url: '/user/cart/cart_add',
             type: 'post',
-            data: {pro_num : $(this).data("pro_num"), cart_amount : $("#btn_quantity").val()},
+            data: {item_num : $(this).data("item_num"), cart_amount : $("#btn_quantity").val()},
             dataType: 'text',
+            beforeSend : function(xhr) {
+                xhr.setRequestHeader("AJAX", "true");
+              },
             success: function(result) {
               if(result == "success") {
                 alert("장바구니에 추가됨");
@@ -223,36 +229,27 @@
                   location.href = "/user/cart/cart_list";
                 }
               }
-            }
-
+            },
+            error: function(xhr, status, error) {
+                alert(status);
+                alert("로그인 페이지로 이동합니다.");
+                location.href = "/member/login";
+              
+              }
           });
         });
 
         // 구매하기(주문)
         $("button[name='btn_order']").on("click", function() {
 
-          let url = "/user/order/order_ready?pro_num=" + $(this).data("pro_num") + "&cart_amount=" + $("#btn_quantity").val();
+          let url = "/user/order/order_ready?item_num=" + $(this).data("item_num") + "&cart_amount=" + $("#btn_quantity").val();
           
           location.href = url;
         });
-        
-        // 상품 이미지, 상품명 클릭했을때 상품코드를 불러와서 상품상세로 보내는 작업.
-        $(".btn_pro_img").on("click", function() {
-            console.log("상품상세설명");
-
-            actionForm.attr("action", "/user/product/pro_detail");
-
-            let pro_num = $(this).data("pro_num");
-
-            actionForm.find("input[name='pro_num']").remove();
-            // <input type='hidden' name='pro_num' value='상품코드' >
-            actionForm.append("<input type='hidden' name='pro_num' value='" + pro_num + "'>");
-            actionForm.submit();
-            })
 
             // 수량변경시
             $("#btn_quantity").on("change", function() {
-                let tot_price = parseInt($("#unit_price").text()) * parseInt($("#btn_quantity").val());
+                let tot_price = parseInt($("#unit_price").text()) * parseInt($("#btn_quantity").val()) + "원";
 
                 //  총상품금액 표시.
                 $("#tot_price").text(tot_price);
@@ -283,7 +280,7 @@
 
             // 상품평 목록 불러오는 작업. (이벤트 사용 안하고, 직접 호출)
             let reviewPage = 1; // 목록에서 첫번째 페이지.
-            let url = "/user/review/list/" + ${productVO.pro_num} + "/" + reviewPage;
+            let url = "/user/review/list/" + ${itemVO.item_num} + "/" + reviewPage;
 
             getReviewInfo(url);
 
@@ -352,13 +349,13 @@
 });
 
 // 상품후기 수정/삭제버튼 표시
-Handlebars.registerHelper("authControlView", function(mbsp_id, rew_num, rew_score) {
+Handlebars.registerHelper("authControlView", function(dark_id, rew_num, rew_score) {
   let str = "";
-  let login_id = "${sessionScope.loginStatus.mbsp_id}";
+  let login_id = "${sessionScope.loginStatus.dark_id}";
 
   // jsp에선 모델작업이나 response작업을 거치지 않은 이엘문법 사용할수 없음.
   // 로그인한 사용자와 상품후기 등록 사용자가 동일한지 체크.
-  if(login_id == mbsp_id) {
+  if(login_id == dark_id) {
     str += '<button type="button" name="btn_review_edit" class="btn btn-info" data-rew_score="' + rew_score + '">[edit]</button> ';
     str += '<button type="button" name="btn_review_del" class="btn btn-danger" data-rew_num="' + rew_num + '">[delete]</button>';
 
@@ -428,6 +425,9 @@ $.ajax({
                 type: 'put',
                 data : JSON.stringify(review_data), // 데이터 포맷 자바스크립트 Object -> json으로 변환
                 dataType: 'text',
+                beforeSend : function(xhr) {
+                    xhr.setRequestHeader("AJAX", "true");
+                  },
                 success : function(result) {
                   if(result == 'success') {
                     alert("상품평이 수정됨");
@@ -436,7 +436,13 @@ $.ajax({
                     $("#review_list").children().remove();
                     getReviewInfo(url);
                   }
-                }
+                },
+                error: function(xhr, status, error) {
+                    alert(status);
+                    alert("로그인 페이지로 이동합니다.");
+                    location.href = "/member/login";
+                  
+                  }
               });
 
 
@@ -460,15 +466,24 @@ $("div#review_list").on("click","button[name='btn_review_del']", function() {
                 },
                 type: 'delete',
                 dataType: 'text',
+                beforeSend : function(xhr) {
+                    xhr.setRequestHeader("AJAX", "true");
+                  },
                 success : function(result) {
                   if(result == 'success') {
                     alert("상품평이 삭제됨");
 
-                    url = "/user/review/list/" + ${productVO.pro_num} + "/" + reviewPage;
+                    url = "/user/review/list/" + ${itemVO.item_num} + "/" + reviewPage;
                     // 상품평 목록 불러오는 작업.
                     getReviewInfo(url);
                   }
-                }
+                },
+                error: function(xhr, status, error) {
+                    alert(status);
+                    alert("로그인 페이지로 이동합니다.");
+                    location.href = "/member/login";
+                  
+                  }
               });
 
 });
@@ -509,7 +524,7 @@ $("div#review_paging").on("click", "nav#navigation ul a", function(e) {
 
   reviewPage = $(this).attr("href"); // 상품후기 선택 페이지번호
 
-  url = "/user/review/list/" + ${productVO.pro_num} + "/" + reviewPage;
+  url = "/user/review/list/" + ${itemVO.item_num} + "/" + reviewPage;
 
   getReviewInfo(url); // 스프링에서 상품후기, 페이지번호 데이터 가져오는 함수.
 
@@ -543,7 +558,7 @@ $("div#review_paging").on("click", "nav#navigation ul a", function(e) {
               }
 
               // ajax를 사용하여 스프링으로 리뷰데이터 전송작업
-              let review_data = {pro_num : $(this).data("pro_num"), rew_content : rew_content, rew_score : rew_score}
+              let review_data = {item_num : $(this).data("item_num"), rew_content : rew_content, rew_score : rew_score}
 
               $.ajax({
                 url: '/user/review/new',
@@ -553,6 +568,9 @@ $("div#review_paging").on("click", "nav#navigation ul a", function(e) {
                 type: 'post',
                 data : JSON.stringify(review_data), // 데이터 포맷 자바스크립트 Object -> json으로 변환
                 dataType: 'text',
+                beforeSend : function(xhr) {
+                    xhr.setRequestHeader("AJAX", "true");
+                  },
                 success : function(result) {
                   if(result == 'success') {
                     alert("상품평이 등록됨");
@@ -561,7 +579,13 @@ $("div#review_paging").on("click", "nav#navigation ul a", function(e) {
                     $("#review_list").children().remove();
                     getReviewInfo(url);
                   }
-                }
+                },
+                error: function(xhr, status, error) {
+                    alert(status);
+                    alert("로그인 페이지로 이동합니다.");
+                    location.href = "/member/login";
+                  
+                  }
               });
             });
     }); // ready event end
@@ -599,7 +623,7 @@ $("div#review_paging").on("click", "nav#navigation ul a", function(e) {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" id="btn_review_save" class="btn btn-primary" data-pro_num="${productVO.pro_num}">상품후기저장</button>
+            <button type="button" id="btn_review_save" class="btn btn-primary" data-item_num="${itemVO.item_num}">상품후기저장</button>
             <button type="button" id="btn_review_modify" class="btn btn-primary">상품후기수정</button>
           </div>
         </div>

@@ -4,13 +4,17 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dark.domain.AdminVO;
+import com.dark.domain.BoardVO;
+import com.dark.domain.MemberVO;
 import com.dark.service.AdminService;
+import com.dark.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -23,6 +27,7 @@ public class AdminController {
 
 	private final AdminService adminService;
 	private final PasswordEncoder passwordEncoder;
+	
 	
 	@GetMapping("/intro")
 	public String adminLogin() {
@@ -74,4 +79,6 @@ public class AdminController {
 	public void admin_menu() {
 		
 	}
+	
+	
 }

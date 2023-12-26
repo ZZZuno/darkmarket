@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dark.mapper.AdOrderMapper">
+
+	<!-- 공통된 sql구문작업 : 검색조건.   -->
+	<!-- 검색기능을 사용하지 않으면,  -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND" prefixOverrides="OR">
+			<foreach collection="cri.typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="cri.type == 'N'.toString()">
+                            ORD_NAME like '%' || #{cri.keyword} || '%'
+						</when>
+						<when test="cri.type == 'C'.toString()">
+                            ORD_CODE like '%' || #{cri.keyword} || '%'
+						</when>					
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	
+	</sql>
+	
+	<sql id="period">
+		
+		<if test="start_date != null and !start_date.equals('')">
+			<![CDATA[
+				ORD_REGDATE >= to_date(#{start_date}) AND ORD_REGDATE <  to_date(#{end_date})  + 1 AND
+			]]>
+		</if>
+	</sql>
+	
+	
+	<!--  CDATA 섹션 -->
+	<select id="order_list" resultType="com.dark.domain.OrderVO" parameterType="map">
+		<![CDATA[
+		select 
+    		ORD_CODE, DARK_ID, ORD_NAME, ORD_ZIPCODE, ORD_ADDR_BASIC, ORD_ADDR_DETAIL, ORD_TEL, ORD_PRICE, ORD_REGDATE, ORD_STATUS, PAYMENT_STATUS
+		from 
+		    (
+		    select /*+INDEX_DESC(ORDER_TBL PK_ORDER_TBL) */
+		        rownum rn, ORD_CODE, DARK_ID, ORD_NAME, ORD_ZIPCODE, ORD_ADDR_BASIC, ORD_ADDR_DETAIL, ORD_TEL, ORD_PRICE, ORD_REGDATE, ORD_STATUS, PAYMENT_STATUS
+		    from 
+		        ORDER_TBL
+		    where 
+		    ]]>
+		    
+		    <include refid="criteria"></include>
+		    <include refid="period"></include>
+		    
+		    
+		    <![CDATA[
+		        rownum <= #{cri.pageNum} * #{cri.amount}
+		    )
+		where 
+		    rn > (#{cri.pageNum} -1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from ORDER_TBL where
+		
+		<include refid="criteria"></include>
+		<include refid="period"></include>
+		
+		ORD_CODE > 0
+	</select>
+	
+	<select id="orderDetailInfo1" parameterType="Long" resultType="com.dark.domain.OrderDetailInfoVO">
+		
+		SELECT 
+			OT.ORD_CODE, OT.ITEM_NUM, OT.DT_AMOUNT, I.ITEM_NAME, I.ITEM_PRICE, OT.DT_AMOUNT * I.ITEM_PRICE as ORD_PRICE, I.ITEM_UP_FOLDER, I.ITEM_IMG   
+		FROM 
+			ORDETAIL_TBL OT, ITEM_TBL I
+		WHERE 
+			OT.ITEM_NUM = I.ITEM_NUM
+		AND 
+			OT.ORD_CODE = #{ord_code}
+	
+	</select>
+	
+	<!-- resultType을 사용하지 않고, resultMap을 사용한 경우 -->
+	<!-- 클래스안에 다른클래스가 필드로 사용이 된 경우 -->
+	<select id="orderDetailInfo2" parameterType="Long" resultMap="orderDetailItemMap">
+		
+		SELECT 
+			OT.ORD_CODE, OT.PRO_NUM, OT.DT_AMOUNT, P.PRO_NAME, P.PRO_PRICE, OT.DT_AMOUNT * P.PRO_PRICE as ORD_PRICE, P.PRO_UP_FOLDER, P.PRO_IMG   
+		FROM 
+			ORDETAIL_TBL OT, PRODUCT_TBL P
+		WHERE 
+			OT.PRO_NUM = P.PRO_NUM
+		AND 
+			OT.ORD_CODE = #{ord_code}
+	
+	</select>
+	
+	<!--  OrderDetailProductVO 클래스를 나타내는 의미 -->
+	<resultMap type="com.dark.domain.OrderDetailProductVO" id="orderDetailItemMap">
+		<collection property="orderDetailVO" resultMap="orderDetailMap"></collection>
+		<collection property="itemVO" resultMap="itemMap"></collection>
+	</resultMap>
+	
+	<!-- resultMap : 테이블의 컬럼명과 클래스의 필드명이 다를경우 매핑하는 목적. -->
+	
+	<!-- orderDetailVO필드에서 필요한 정보  -->
+	<resultMap type="com.dark.domain.OrderDetailVO" id="orderDetailMap">
+		<id property="ord_code" column="ord_code"/>
+		<id property="item_num" column="item_num"/>
+		<result property="dt_amount" column="dt_amount"/>
+		<result property="dt_price" column="dt_price"/>
+	</resultMap>
+	
+	<!-- ItemVO필드에서 필요한 정보 -->
+	<resultMap type="com.dark.domain.ItemVO" id="itemMap">
+		<id property="item_num" column="item_num"/>
+		
+		<result property="cg_code" column="cg_code"/>
+		<result property="item_name" column="item_name"/>
+		<result property="item_price" column="item_price"/>
+		<result property="item_discount" column="item_discount"/>
+		<result property="item_publisher" column="item_publisher"/>
+		<result property="item_content" column="item_content"/>
+		<result property="item_up_folder" column="item_up_folder"/>
+		<result property="item_img" column="item_img"/>
+		<result property="item_amount" column="item_amount"/>
+		<result property="item_buy" column="item_buy"/>
+		<result property="item_date" column="item_date"/>
+		<result property="item_updatedate" column="item_updatedate"/>
+	
+	</resultMap>
+	
+	<!-- 테이블의 컬럼명과 클래스의 필드명이 다른경우 -->
+
+
+	<delete id="order_product_delete" parameterType="map">
+	
+		DELETE FROM
+			ORDETAIL_TBL
+		WHERE
+			ORD_CODE = #{ord_code} AND item_NUM = #{item_num}
+	</delete>
+
+</mapper>  

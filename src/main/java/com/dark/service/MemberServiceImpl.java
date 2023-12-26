@@ -1,10 +1,13 @@
 package com.dark.service;
 
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dark.domain.MemberVO;
+import com.dark.dto.Criteria;
 import com.dark.mapper.MemberMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -67,5 +70,17 @@ public class MemberServiceImpl implements MemberService {
 	    // 데이터베이스에 업데이트
 	    // memberMapper를 사용하여 데이터베이스에 업데이트하는 로직 구현
 	    memberMapper.updatePassword(id, encryptedPassword);
+	}
+
+	@Override
+	public List<MemberVO> member_list(Criteria cri) {
+		
+		return memberMapper.member_list(cri);
+	}
+
+	@Override
+	public int getTotalCount(Criteria cri) {
+		// TODO Auto-generated method stub
+		return memberMapper.getTotalCount(cri);
 	}
 }

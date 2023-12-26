@@ -61,5 +61,16 @@ public class UserProductController {
 			return FileUtils.getFile(uploadPath + dateFolderName, fileName);
 		}
 		
+		@GetMapping("/pro_detail")
+		public void pro_detail(Criteria cri, Integer cg_code, @ModelAttribute("cg_name") String cg_name, Integer item_num, Model model) {
+			
+			ItemVO itemVO = userProductService.pro_detail(item_num);
+			
+			itemVO.setItem_up_folder(itemVO.getItem_up_folder().replace("\\", "/"));
+			
+			model.addAttribute("itemVO", itemVO);
+			
+		}
+		
 }
 	
