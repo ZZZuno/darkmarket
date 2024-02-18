@@ -37,42 +37,36 @@ public class MemberController {
 	@GetMapping("/join")
 	public void join() {
 		
-		log.info("회원가입 호출");
 	}
 	
 	@GetMapping("/idCheck")
 	public ResponseEntity<String> idCheck(String dark_id) throws Exception {
-		log.info("아이디 :" + dark_id);
 		
 		ResponseEntity<String> entity = null;
 		
 		String idUse = "";
+		
 		if(memberService.idCheck(dark_id) != null) {
-			idUse = "no"; // 아이디 존재.
-		}else {
-			idUse = "yes"; // 아이디 존재 X 사용가능.
+			idUse = "no";
+		} else {
+			idUse = "yes";
 		}
 		
-		entity = new ResponseEntity<String>(idUse, HttpStatus.OK); // ajax로 "yes"를 보냄으로써 success 구문 동작.
+		entity = new ResponseEntity<String>(idUse, HttpStatus.OK);
 		
 		return entity;
-		
-		
-	}
-	// 회원정보 저장 -> 다른주소로 이동 (redirect)
+			}
+	
 	@PostMapping("/join")
 	public String join(MemberVO vo, RedirectAttributes rttr) {
 		
-		log.info("회원정보: " + vo);
-		
 		vo.setDark_password(passwordEncoder.encode(vo.getDark_password()));
-		
-		log.info("암호화 비밀번호: " + vo.getDark_password());
 		
 		memberService.join(vo);
 		
 		return "redirect:/member/login";
 	}
+	
 	
 	@GetMapping("/login")
 	public void login() {

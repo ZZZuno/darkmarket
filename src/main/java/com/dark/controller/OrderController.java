@@ -214,18 +214,15 @@ public class OrderController {
 		}
 		
 		@GetMapping("/order_list")
-		public void order_list(Criteria cri,  @ModelAttribute("start_date") String start_date, @ModelAttribute("end_date") String end_date, Model model) throws Exception {
+		public void order_list(Model model, HttpSession session) throws Exception {
 			
 			// this(1, 10);
 			// 10 -> 2
-			cri.setAmount(2);
 			
+			String dark_id = ((MemberVO) session.getAttribute("loginStatus")).getDark_id();
 			
-			List<OrderVO> order_list = adOrderService.order_list(cri, start_date, end_date);
+			List<OrderVO> order_list = orderService.order_list(dark_id);
 			model.addAttribute("order_list", order_list);
-			
-			int totalCount = adOrderService.getTotalCount(cri, start_date, end_date);
-			model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
 		}
 		
 		

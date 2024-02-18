@@ -59,4 +59,16 @@ values
 	</if>
 	)
 	</insert>
+	
+	<select id="order_list" parameterType="String" resultType="com.dark.domain.OrderVO">
+	
+	select
+		ORD_CODE, DARK_ID, ORD_NAME, ORD_ZIPCODE, ORD_ADDR_BASIC, ORD_ADDR_DETAIL, ORD_TEL, ORD_PRICE, ORD_REGDATE, ORD_STATUS, PAYMENT_STATUS
+	from 
+		ORDER_TBL
+	where
+		dark_id = #{dark_id}
+	ORDER BY ORD_REGDATE DESC
+	
+	</select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.dark.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,5 +31,11 @@ public class OrderServiceImpl implements OrderService {
 		orderMapper.order_detail_insert(o_vo.getOrd_code(), o_vo.getDark_id());
 		orderMapper.cart_del(o_vo.getDark_id());
 		orderMapper.payment_insert(p_vo);
+	}
+
+	@Override
+	public List<OrderVO> order_list(String dark_id) {
+		
+		return orderMapper.order_list(dark_id);
 	}
 }

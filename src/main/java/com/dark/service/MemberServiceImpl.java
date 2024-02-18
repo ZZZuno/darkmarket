@@ -19,17 +19,7 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberMapper memberMapper;
 	private final PasswordEncoder passwordEncoder;
 
-	@Override
-	public String idCheck(String dark_id) {
-		
-		return memberMapper.idCheck(dark_id);
-	}
 
-	@Override
-	public void join(MemberVO vo) {
-		memberMapper.join(vo);
-		
-	}
 
 	@Override
 	public MemberVO login(String dark_id) {
@@ -82,5 +72,17 @@ public class MemberServiceImpl implements MemberService {
 	public int getTotalCount(Criteria cri) {
 		// TODO Auto-generated method stub
 		return memberMapper.getTotalCount(cri);
+	}
+
+	@Override
+	public String idCheck(String dark_id) {
+		// TODO Auto-generated method stub
+		return memberMapper.idCheck(dark_id);
+	}
+
+	@Override
+	public void join(MemberVO vo) {
+		memberMapper.join(vo);
+		
 	}
 }

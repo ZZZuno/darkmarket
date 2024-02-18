@@ -1,5 +1,7 @@
 package com.dark.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.dark.domain.OrderVO;
@@ -16,4 +18,6 @@ public interface OrderMapper {
 	void cart_del(String dark_id);
 	
 	void payment_insert(PaymentVO vo);
+	
+	List<OrderVO> order_list(String dark_id);
 }

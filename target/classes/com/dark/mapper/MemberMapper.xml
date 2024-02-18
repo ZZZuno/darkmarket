@@ -22,23 +22,21 @@
 	
 	</sql>
 	
-<select id="idCheck" parameterType="String" resultType="String">
-SELECT 
-	dark_id
-FROM
-	dark_tbl
-WHERE
-	DARK_ID = #{dark_id}
+	<select id="idCheck" parameterType="String" resultType="String">
+	
+	select dark_id
+	from dark_tbl
+	where dark_id = #{dark_id}
+	
+	</select>
+	
+	<insert id="join" parameterType="com.dark.domain.MemberVO">
+	
+	INSERT INTO DARK_TBL(DARK_ID, DARK_NAME, DARK_EMAIL, DARK_PASSWORD, DARK_ZIPCODE, DARK_ADDR, DARK_DEADDR, DARK_PHONE)
+	VALUES (#{dark_id}, #{dark_name}, #{dark_email}, #{dark_password}, #{dark_zipcode}, #{dark_addr}, #{dark_deaddr}, #{dark_phone})
+	</insert>
+	
 
-</select>
-
-
-
-<insert id="join" parameterType="com.dark.domain.MemberVO">
-INSERT INTO DARK_TBL(DARK_ID, DARK_NAME, DARK_EMAIL, DARK_PASSWORD, DARK_ZIPCODE, DARK_ADDR, DARK_DEADDR, DARK_PHONE)
-VALUES (#{dark_id}, #{dark_name}, #{dark_email}, #{dark_password}, #{dark_zipcode}, #{dark_addr}, #{dark_deaddr}, #{dark_phone})
-
-</insert>
 
 <select id="login" parameterType="String" resultType="com.dark.domain.MemberVO">
 
